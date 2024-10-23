@@ -1,0 +1,125 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Geneva, "Noto Sans Armenian", "Noto Sans Bengali", "Noto Sans Cherokee", "Noto Sans Devanagari", "Noto Sans Ethiopic", "Noto Sans Georgian", "Noto Sans Hebrew", "Noto Sans Kannada", "Noto Sans Khmer", "Noto Sans Lao", "Noto Sans Osmanya", "Noto Sans Tamil", "Noto Sans Telugu", "Noto Sans Thai", sans-serif;
+    background-color: #edeef0;
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    background-color: #4a76a8;
+    padding: 10px 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+  }
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+  }
+  .search-bar {
+    flex-grow: 1;
+    max-width: 400px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 15px;
+  }
+  .content {
+    max-width: 960px;
+    margin: 20px auto;
+    display: flex;
+    gap: 20px;
+  }
+  .left-column {
+    width: 30%;
+  }
+  .right-column {
+    width: 70%;
+  }
+  .profile-card, .friends-card, .photos-card, .post-card {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  .profile-picture {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .profile-name {
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .profile-status {
+    color: #656565;
+    margin-bottom: 10px;
+  }
+  .profile-action {
+    background-color: #5181b8;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .profile-action:hover {
+    background-color: #4a76a8;
+  }
+  .card-title {
+    font-size: 14px;
+    color: #656565;
+    margin-bottom: 10px;
+  }
+  .friends-grid, .photos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .friend-item, .photo-item {
+    text-align: center;
+  }
+  .friend-avatar, .photo-thumbnail {
+    width: 100%;
+    border-radius: 50%;
+  }
+  .friend-name {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  .post-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .post-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .post-name {
+    font-weight: bold;
+  }
+  .post-date {
+    color: #656565;
+    font-size: 12px;
+  }
+  .post-content {
+    margin-bottom: 10px;
+  }
+  .post-actions {
+    display: flex;
+    justify-content: space-between;
+    color: #2a5885;
+    font-size: 14px;
+  }
