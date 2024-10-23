@@ -1,5 +1,5 @@
 async function regFunction(event) {
-    event.preventasync default();  // Предотвращаем стандартное действие формы
+    event.preventDefault();  // Предотвращаем стандартное действие формы
 
     // Получаем форму и собираем данные из неё
     const form = document.getElementById('registration-form');
@@ -59,8 +59,8 @@ function displayErrors(errorData) {
     alert(message);
 }
 
-async function loginFunctio(event) {
-    event.preventasync default();  // Предотвращаем стандартное действие формы
+async function loginFunction(event) {
+    event.preventDefault();  // Предотвращаем стандартное действие формы
 
     // Получаем форму и собираем данные из неё
     const form = document.getElementById('login-form');
@@ -121,7 +121,7 @@ async function logoutFunction() {
 }
 
 async function buy_tokens(event) {
-        event.preventasync default();
+        event.preventDefault();
         // Получаем форму и собираем данные из неё
         alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
         try {
