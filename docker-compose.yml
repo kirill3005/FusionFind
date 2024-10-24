@@ -24,7 +24,7 @@ services:
       PYTHONUNBUFFERED: 1
       PYTHONDONTWRITEBYTECODE: 1
     volumes:
-      - ${PROJECT_VOLUME}:/api:cached
+      - ./api/:/api:cached
     ports:
       - "8001:8001"
     command:
