@@ -22,7 +22,7 @@
 <!-- Подключаем внешний JavaScript-файл -->
 <script>
     async function loginFunction(event) {
-        event.preventasync default();  // Предотвращаем стандартное действие формы
+        event.preventDefault();  // Предотвращаем стандартное действие формы
 
         // Получаем форму и собираем данные из неё
         const form = document.getElementById('login-form');
