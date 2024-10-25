@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
@@ -14,8 +14,8 @@ app.mount('/static', StaticFiles(directory='static'), 'static')
 templates = Jinja2Templates(directory='templates')
 
 @app.get('/')
-async def index():
-    return {'message':'Hello'}
+async def index(request: Request):
+    return templates.TemplateResponse('main_page.html', context={'request': request})
 
 app.include_router(router_users)
 app.include_router(main_router)

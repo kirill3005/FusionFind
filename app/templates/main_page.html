@@ -1,121 +1,353 @@
 <html>
 <head>
+    <base href="https://www.tbank.ru/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новости | ВКонтакте</title>
-    <link rel="stylesheet" type="text/css" href="/static/style/main_page.css">
+    <title>Т—Банк - AI Shopping Assistant Platform</title>
+    <style>
+        :root {
+            --primary-color: #ffdd2d;
+            --text-color: #333;
+            --bg-light: #f5f5f5;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-color);
+        }
+
+        .header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+
+        .button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ffd700;
+        }
+
+        .hero {
+            padding: 160px 0 80px;
+            background: linear-gradient(45deg, #fff, #f8f9fa);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #333, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            padding: 30px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+            background: white;
+        }
+
+        .demo-bot {
+            margin-top: 60px;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chat-interface {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background: #f0f0f0;
+            margin-right: auto;
+        }
+
+        .user-message {
+            background: var(--primary-color);
+            margin-left: auto;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .floating-bot {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <header class="header">
-        <div class="header-content">
-            <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202-2.17-3.067-2.778-5.37-2.778-5.845 0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.848 2.46 2.274 4.617 2.867 4.617.22 0 .322-.102.322-.66V9.829c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.75c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.15-3.574 2.15-3.574.119-.254.322-.491.813-.491h1.744c.525 0 .643.27.525.643-.22 1.017-2.357 4.031-2.357 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/>
-            </svg>
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Поиск">
-            </div>
-            <div class="user-menu">
-                <!-- Здесь могут быть иконки уведомлений, сообщений и т.д. -->
-            </div>
-        </div>
-    </header>
-
-    <div class="main-content">
-        <div class="content-wrapper">
-            <nav class="left-sidebar">
-                <a href="https://vk.com/feed" class="menu-item">Моя страница</a>
-                <a href="https://vk.com/feed" class="menu-item">Новости</a>
-                <a href="https://vk.com/im" class="menu-item">Мессенджер</a>
-                <a href="https://vk.com/friends" class="menu-item">Друзья</a>
-                <a href="https://vk.com/groups" class="menu-item">Сообщества</a>
-                <a href="https://vk.com/photos" class="menu-item">Фотографии</a>
-                <a href="https://vk.com/music" class="menu-item">Музыка</a>
-                <a href="https://vk.com/video" class="menu-item">Видео</a>
-                <a href="https://vk.com/apps" class="menu-item">Игры</a>
-            </nav>
-
-            <main class="news-feed">
-                <div class="story-container">
-                    <div class="story">
-                        <img src="https://placekitten.com/40/40" alt="История" class="story-avatar">
-                        <span class="story-title">Добавить историю</span>
-                    </div>
-                    <div class="story">
-                        <img src="https://placekitten.com/41/41" alt="История друга" class="story-avatar">
-                        <span class="story-title">Анна</span>
-                    </div>
-                    <div class="story">
-                        <img src="https://placekitten.com/42/42" alt="История друга" class="story-avatar">
-                        <span class="story-title">Петр</span>
-                    </div>
-                    <!-- Дополнительные истории -->
-                </div>
-
-                <div class="post-creation">
-                    <textarea class="post-input" placeholder="Что у вас нового?"></textarea>
-                </div>
-                {% for post in posts %}
-                <div class="post">
-                    <div class="post-header">
-                        <img src="/static/images/users_{{ post.photo }}.webp" alt="Аватар пользователя" class="avatar">
-                        <div class="post-info">
-                            <strong>{{ users[post.id-1]['first_name'] }} {{ users[post.id-1]['last_name'] }}</strong>
-                            <div>{{ post.created_at }}</div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        {{ post.post_text }}
-                    </div>
-                    {% if post.photo != null %}
-                    <img src="/static/images/posts_{{ post.photo }}.webp" alt="Фото поста" class="post-image">
-                    {% endif %}
-                    <div class="post-actions">
-                        <span class="action">Нравится</span>
-                        <span class="action">Комментировать</span>
-                        <span class="action">Поделиться</span>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </main>
-
-            <aside class="right-sidebar">
-                <div class="user-info">
-                    <img src="https://placekitten.com/200/200" alt="Фото профиля" class="user-avatar">
-                    <div class="user-name">Иван Иванов</div>
-                    <div class="user-status">Установить статус</div>
-                </div>
-
-                <div class="friends-widget">
-                    <div class="widget-title">Друзья онлайн</div>
-                    <div class="friends-grid">
-                        <div class="friend-item">
-                            <img src="https://placekitten.com/60/60" alt="Друг" class="friend-avatar">
-                            <div class="friend-name">Анна</div>
-                        </div>
-                        <div class="friend-item">
-                            <img src="https://placekitten.com/61/61" alt="Друг" class="friend-avatar">
-                            <div class="friend-name">Петр</div>
-                        </div>
-                        <div class="friend-item">
-                            <img src="https://placekitten.com/62/62" alt="Друг" class="friend-avatar">
-                            <div class="friend-name">Ольга</div>
-                        </div>
-                        <!-- Дополнительные друзья -->
-                    </div>
-                </div>
-            </aside>
+<header class="header">
+    <div class="container nav">
+        <img src = 'https://cdn.tbank.ru/static/pfa-multimedia/images/de8a4fa0-0b29-4901-a678-35f93d358cdf.png' alt="Лого" width=13%>
+        <ul>
+            <li><a href="/features">Возможности</a></li>
+            <li><a href="/pricing">Тарифы</a></li>
+            <li><a href="/marketplace">Маркетплейс</a></li>
+            <li><a href="/docs">Документация</a></li>
+        </ul>
+        <div>
+            <a href="/my" class="button">Личный кабинет</a>
         </div>
     </div>
-</div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <h1>AI Shopping Assistant Platform</h1>
+        <p>Создавайте умных ботов для вашего бизнеса. Мультимодальные ассистенты с поддержкой изображений, голоса и
+            текста.</p>
+        <a href="/create-bot" class="button">Создать бота</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>Возможности платформы</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Мультимодальность</h3>
+                <p>Работа с текстом, изображениями и голосом в едином интерфейсе</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Интеграции</h3>
+                <p>Готовые интеграции с популярными платформами электронной коммерции</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Аналитика</h3>
+                <p>Подробная статистика и аналитика использования ботов</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>1M+</h3>
+                <p>Активных ботов</p>
+            </div>
+            <div class="stat-item">
+                <h3>50K+</h3>
+                <p>Компаний</p>
+            </div>
+            <div class="stat-item">
+                <h3>99.9%</h3>
+                <p>Uptime</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Поддержка</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Попробуйте демо-версию</h2>
+        <p>Оцените возможности платформы прямо сейчас</p>
+
+        <div class="demo-bot">
+            <div class="chat-interface">
+                <div class="message bot-message">
+                    Привет! Я демо-версия shopping-ассистента. Как я могу помочь вам сегодня?
+                </div>
+                <div class="message user-message">
+                    Хочу купить новый телефон
+                </div>
+                <div class="message bot-message">
+                    Отлично! Давайте подберем для вас идеальный смартфон. Какой бюджет вы рассматриваете?
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="text" class="chat-input" placeholder="Введите сообщение...">
+                <button class="button">Отправить</button>
+            </div>
+        </div>
+    </div>
+</section>
 
 <script>
-    // Здесь можно добавить JavaScript для интерактивности
-    document.querySelectorAll('.action').forEach(action => {
-        action.addEventListener('click', function () {
-            alert('Вы нажали на ' + this.textContent);
-        });
+    document.querySelector('.chat-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const message = this.value;
+            if (message.trim()) {
+                const chatInterface = document.querySelector('.chat-interface');
+
+                // Add user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user-message';
+                userMessage.textContent = message;
+                chatInterface.appendChild(userMessage);
+
+                // Add bot response
+                setTimeout(() => {
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'message bot-message';
+                    botMessage.textContent = 'Спасибо за ваше сообщение! Это демо-версия, для полного функционала создайте своего бота.';
+                    chatInterface.appendChild(botMessage);
+
+                    chatInterface.scrollTop = chatInterface.scrollHeight;
+                }, 1000);
+
+                this.value = '';
+            }
+        }
     });
 </script>
 </body>

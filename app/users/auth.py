@@ -1,3 +1,4 @@
+from fastapi.security import APIKeyHeader
 from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta, timezone
@@ -5,10 +6,10 @@ from datetime import datetime, timedelta, timezone
 from pydantic import EmailStr
 from requests import Request
 
-from config import get_auth_data
+from config import get_auth_data, settings
 from users.dao import UsersDAO
 
-from fastapi import Request, HTTPException, status, Depends
+from fastapi import Request, HTTPException, status, Depends, Security
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -32,3 +33,30 @@ async def authenticate_user(email: EmailStr, password: str):
         return None
     return user
 
+
+async def check_access_token(
+        request: Request,
+        authorization_header: str = Security(APIKeyHeader(name='Authorization', auto_error=False))
+) -> str:
+    # Проверяем, что токен передан
+    if authorization_header is None:
+        raise {'message':'Ошибка при проверке токена'}
+
+    # Убираем лишнее из токена
+    clear_token = authorization_header.replace('Bearer ', '')
+
+    try:
+        # Проверяем валидность токена
+        payload = jwt.decode(clear_token, key=settings.SECRET_KEY, algorithms=settings.ALGORITHM)
+    except {'message':'Ошибка при проверке токена'}:
+        # В случае невалидности возвращаем ошибку
+        raise {'message':'Ошибка при проверке токена'}
+
+    # Идентифицируем пользователя
+    user = await UsersDAO.find_one_or_none(id=payload['sub'])
+    if not user:
+        raise {'message':'Ошибка при проверке токена'}
+
+    request.state.user = user
+
+    return authorization_header

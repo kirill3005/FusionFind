@@ -9,7 +9,8 @@ class User(Base):
     email: Mapped[str_uniq]
     first_name: Mapped[str]
     last_name: Mapped[str]
-    tokens: Mapped[int]
+    token: Mapped[str_uniq]
+    tokens_count: Mapped[int]
 
 
     extend_existing = True

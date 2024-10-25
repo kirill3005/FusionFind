@@ -13,7 +13,8 @@ class SUserRegister(BaseModel):
     phone_number: str = Field(..., description="Номер телефона в международном формате, начинающийся с '+'")
     first_name: str = Field(..., min_length=3, max_length=50, description="Имя, от 3 до 50 символов")
     last_name: str = Field(..., min_length=3, max_length=50, description="Фамилия, от 3 до 50 символов")
-    tokens: Optional[int] = Field(0, description='Баланс пользователя')
+    token: str = Field(..., description='Токен пользователя')
+    tokens_count: Optional[int] = Field(0, description='Баланс пользователя')
     @field_validator("phone_number")
     @classmethod
     def validate_phone_number(cls, value: str) -> str:
