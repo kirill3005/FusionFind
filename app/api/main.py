@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, Header
 
 from users.dao import UsersDAO
 
@@ -9,7 +9,7 @@ app = FastAPI()
 async def index():
     return {'message': 'Hello World'}
 
-@app.post('/')
-async def main_api(user_token: str):
-    user = await UsersDAO.find_one_or_none(token=user_token)
+@app.post('/{token}')
+async def main_api(token: str):
+    user = await UsersDAO.find_one_or_none(token=token)
     return user
