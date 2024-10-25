@@ -11,7 +11,7 @@ class User(Base):
     last_name: Mapped[str]
     token: Mapped[str_uniq]
     tokens_count: Mapped[int]
-
+    database: Mapped[str]
 
     extend_existing = True
 

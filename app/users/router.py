@@ -73,3 +73,6 @@ async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)
         return {"message": "Токены успешно добавлены!"}
     else:
         return {"message": "Ошибка при добавлении токенов"}
+@router.post("/db_connect")
+async def db_connect(db_url:str, user_data: User = Depends(get_current_user)):
+    await UsersDAO.update(filter_by={'id': user_data.id}, database=db_url)
