@@ -3,3 +3,4 @@ app/.env
 .idea
 docker/server/nginx/access.log
 docker/server/nginx/error.log
+nginx/nginx.conf
