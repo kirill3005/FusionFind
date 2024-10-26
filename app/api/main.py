@@ -30,6 +30,7 @@ async def send_message(token: str, conversation_id: int, message: NewMessage):
     user = await UsersDAO.find_one_or_none(token=token)
     if user.tokens_count <= 0:
         return {'message': 'У вас закончились токены'}
+    await UsersDAO.update(filter_by={'user_token': token},tokens_count=user.tokens_count - 1)
     msg_dict = message.dict()
     msg_dict['user_token'] = token
     msg_dict['sender'] = 'user'
