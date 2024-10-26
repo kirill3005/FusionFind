@@ -5,8 +5,9 @@ from pydantic import BaseModel, Field, EmailStr, validator, ConfigDict, field_va
 
 
 
-class NewBot(BaseModel):
-    user_id: int = Field(...)
+class NewMessage(BaseModel):
+    message: str = Field(...)
+    photo: Optional[str] = Field(None)
 
 
 
