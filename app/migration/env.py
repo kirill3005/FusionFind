@@ -9,9 +9,9 @@ import sys
 from os.path import dirname, abspath
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
-from app.database import Base
-from app.users.models import User
-from app.messages.models import Message, Conversation
+from database import Base
+from users.models import User
+from messages.models import Message, Conversation
 
 
 config = context.config
@@ -19,6 +19,12 @@ config.set_main_option("sqlalchemy.url", "postgresql+asyncpg://admin:password@lo
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 target_metadata = Base.metadata
+
+# other values from the config, defined by the needs of env.py,
+# can be acquired:
+# my_important_option = config.get_main_option("my_important_option")
+# ... etc.
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
