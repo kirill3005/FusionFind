@@ -68,7 +68,7 @@ async def buy_tokens_page(request: Request):
 @router.put('/buy_tokens')
 async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)) -> dict:
     check = await UsersDAO.update(filter_by={'id': user_data.id},
-                                   tokens=user_data.tokens+count.tokens)
+                                   tokens=user_data.tokens_count+count.tokens)
     if check:
         return {"message": "Токены успешно добавлены!"}
     else:
