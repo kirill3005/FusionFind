@@ -33,7 +33,7 @@ async def send_message(token: str, conversation_id: int, message: NewMessage):
     msg_dict = message.dict()
     msg_dict['user_token'] = token
     msg_dict['sender'] = 'user'
-    await MessagesDAO.add(**msg_dict())
+    await MessagesDAO.add(**msg_dict)
     '''response = model(message.message, message.photo)'''
     response_dict = {'message': 'response', 'user_token': token, 'photo': None, 'sender': 'model',
                      'conversation_id': conversation_id}
