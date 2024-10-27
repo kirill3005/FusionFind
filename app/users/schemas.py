@@ -15,7 +15,7 @@ class SUserRegister(BaseModel):
     last_name: str = Field(..., min_length=3, max_length=50, description="Фамилия, от 3 до 50 символов")
     token: str = Field('')
     tokens_count: Optional[int] = Field(0, description='Баланс пользователя')
-    database: str = Field('')
+    databases: str = Field([])
     @field_validator("phone_number")
     @classmethod
     def validate_phone_number(cls, value: str) -> str:

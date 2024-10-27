@@ -1,4 +1,4 @@
-import jwt
+from jose import jwt
 from fastapi import APIRouter, HTTPException, status, Response, Depends, UploadFile, Request, File
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
@@ -15,7 +15,7 @@ from users.dependencies import get_current_user
 from databases.schemas import NewDB
 from config import get_auth_data
 
-from app.databases.dao import DatabasesDAO
+from databases.dao import DatabasesDAO
 
 router = APIRouter(prefix='/user', tags=['Работа с пользователями'])
 templates = Jinja2Templates(directory='templates')
