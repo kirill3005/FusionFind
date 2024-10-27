@@ -82,9 +82,8 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     db_dict = db_info.dict()
     db_dict['user_token'] = user_data.token
     db_dict['token'] = ''
-    await DatabasesDAO.add(**db_dict)
-    db = await DatabasesDAO.find_one_or_none(user_token=user_data.token)
+    db = await DatabasesDAO.add(**db_dict)
     auth_data = get_auth_data()
-    db_token = jwt.encode(db.id, auth_data['secret_key'], algorithm=auth_data['algorithm'])
+    db_token = jwt.encode({'sub':db.id}, auth_data['secret_key'], algorithm=auth_data['algorithm'])
     await DatabasesDAO.update(filter_by={'id': db.id},token=db_token)
     await UsersDAO.update(filter_by={'id': user_data.id}, databases=user_data.databases+[db.token])
