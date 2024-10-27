@@ -20,13 +20,13 @@ async def main_api(token: str):
     return user
 
 
-@app.post('/new_conversation/{token}')
-async def new_conv(token: str):
-    await ConversationsDAO.add(**{'user_token': token})
+@app.post('/new_conversation/{token}/{project_token}')
+async def new_conv(token: str, project_token: str):
+    await ConversationsDAO.add(**{'user_token': token, 'project_token': project_token})
 
 
-@app.post('/message/{token}/{conversation_id}')
-async def send_message(token: str, conversation_id: int, message: NewMessage):
+@app.post('/message/{token}/{project_token}/{conversation_id}')
+async def send_message(token: str, project_token:str, conversation_id: int, message: NewMessage):
     user = await UsersDAO.find_one_or_none(token=token)
     if user.tokens_count <= 0:
         return {'message': 'У вас закончились токены'}
@@ -35,9 +35,10 @@ async def send_message(token: str, conversation_id: int, message: NewMessage):
     msg_dict['user_token'] = token
     msg_dict['sender'] = 'user'
     msg_dict['conversation_id'] = conversation_id
+    msg_dict['project_token'] = project_token
     await MessagesDAO.add(**msg_dict)
     '''response = model(message.message, message.photo)'''
     response_dict = {'message': 'response', 'user_token': token, 'photo': '', 'sender': 'model',
-                     'conversation_id': conversation_id}
+                     'conversation_id': conversation_id, 'project_token': project_token}
     await MessagesDAO.add(**response_dict)
     return 'response'

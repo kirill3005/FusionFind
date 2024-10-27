@@ -6,6 +6,7 @@ class Message(Base):
     id: Mapped[int_pk]
     conversation_id: Mapped[int]
     user_token: Mapped[str]
+    project_token: Mapped[str]
     message: Mapped[str]
     photo: Mapped[str]
     sender: Mapped[str]
@@ -15,3 +16,4 @@ class Message(Base):
 class Conversation(Base):
     id: Mapped[int_pk]
     user_token: Mapped[str]
+    project_token: Mapped[str]
