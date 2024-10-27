@@ -18,8 +18,9 @@ from config import get_auth_data
 from databases.dao import DatabasesDAO
 
 from users.auth import generate_single_part_token
+from db_migration.migrate import DataMigration
 
-router = APIRouter(prefix='/user', tags=['Работа с пользователями'])
+router = APIRouter(prefix='/user')
 templates = Jinja2Templates(directory='templates')
 
 @router.get("/register")
@@ -99,5 +100,29 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     db_token = generate_single_part_token(db.id)
     await DatabasesDAO.update(filter_by={'id': db.id},token=db_token)
     await UsersDAO.update(filter_by={'id': user_data.id}, databases=user_data.databases+[db_token])
-    #migrate(database_url=f'{db.dialect}://{db.user}:{db.password}@{db.host}:{db.port}/{db.db_name}', qdrant_url="http://qdrant:6333", collenction_name='', vector_size='')
+    config = {
+        'database': {
+            'dialect': db.dialect,  # Тип реляционной базы данных (может быть MySQL, SQLite, etc.)
+            'host': {db.host},  # Хост базы данных
+            'port': int(db.port),  # Порт базы данных
+            'user': {db.user},  # Имя пользователя для базы данных
+            'password': db.password,  # Пароль для подключения к базе данных
+            'database': db.db_name  # Название базы данных
+        },
+        'qdrant': {
+            'host': '194.87.56.165',  # Хост для подключения к Qdrant
+            'port': 6333,  # Порт для подключения к Qdrant
+            'collection_name': db_token,  # Имя коллекции в Qdrant
+            'vector_size': 1024  # Размер векторов (должен соответствовать модели)
+        },
+        'mapping': {
+            'table': db.table_name,  # Имя таблицы в реляционной базе данных
+            'vector_column': db.vector_column,  # Колонка с текстом для векторизации
+            'metadata_columns': db.metadata_columns,  # Колонки с метаданными
+        },
+        'image_save_path': db.image_save_path,  # Директория для сохранения изображений
+        'lang': 'en'  # Язык
+    }
+    migrator = DataMigration(config)
+    migrator.migrate()
 

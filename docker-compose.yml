@@ -57,8 +57,10 @@ services:
   qdrant:
     image: qdrant/qdrant:latest
     container_name: qdrant
+    restart: always
     ports:
       - "6333:6333"
+      - "6334:6334"
     volumes:
       - ./qdrant_data:/qdrant/storage
     networks:
@@ -86,4 +88,6 @@ networks:
 volumes:
   pgdata:
     driver: local
+  qdrant_data:
+
 
