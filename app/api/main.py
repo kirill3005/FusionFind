@@ -20,12 +20,12 @@ async def main_api(token: str):
     return user
 
 
-@app.post('/new_conversation/{token}/{project_token}')
+@app.post('/new_conversation/{token}/{project_token}',tags=['Создать новый диалог'])
 async def new_conv(token: str, project_token: str):
     await ConversationsDAO.add(**{'user_token': token, 'project_token': project_token})
 
 
-@app.post('/message/{token}/{project_token}/{conversation_id}')
+@app.post('/message/{token}/{project_token}/{conversation_id}',tags=['Передача сообщения от пользователя модели и получение ответа'])
 async def send_message(token: str, project_token:str, conversation_id: int, message: NewMessage):
     user = await UsersDAO.find_one_or_none(token=token)
     if user.tokens_count <= 0:
@@ -41,4 +41,4 @@ async def send_message(token: str, project_token:str, conversation_id: int, mess
     response_dict = {'message': 'response', 'user_token': token, 'photo': '', 'sender': 'model',
                      'conversation_id': conversation_id, 'project_token': project_token}
     await MessagesDAO.add(**response_dict)
-    return 'response'
+    return 'Ответ от модели'

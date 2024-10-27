@@ -26,7 +26,7 @@ templates = Jinja2Templates(directory='templates')
 async def register_user_template(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-@router.post("/register")
+@router.post("/register", tags=['Регистрация нового пользователя (номер телефона вводить в правильном виде)'])
 async def register_user(user_data: SUserRegister, response: Response):
     user = await UsersDAO.find_one_or_none(email=user_data.email)
     if user:
@@ -52,7 +52,7 @@ async def register_user(user_data: SUserRegister, response: Response):
 async def get_students_html(request: Request):
     return templates.TemplateResponse(name='login.html', context={'request': request})
 
-@router.post("/login")
+@router.post("/login", tags=['Авторизация пользователя'])
 async def auth_user(response: Response, user_data: SUserAuth):
     check = await authenticate_user(email=user_data.email, password=user_data.password)
     if check is None:
@@ -71,7 +71,7 @@ async def get_me(request: Request, user_data: User = Depends(get_current_user)):
 async def buy_tokens_page(request: Request):
     return templates.TemplateResponse(name='buy_tokens.html', context={'request': request})
 
-@router.put('/buy_tokens')
+@router.put('/buy_tokens', tags=['Купить токены'])
 async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)) -> dict:
     check = await UsersDAO.update(filter_by={'id': user_data.id},
                                    tokens_count=user_data.tokens_count+count.tokens)
@@ -85,11 +85,11 @@ async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)
 async def get_token(request: Request, user_data: User = Depends(get_current_user)):
     return user_data.token
 
-@router.get('/projects')
+@router.get('/projects', tags=['Запросить свои проекты'])
 async def get_projects(user_data: User = Depends(get_current_user)):
     return await DatabasesDAO.find_all(user_token=user_data.token)
 
-@router.post("/new_project")
+@router.post("/new_project", tags=['Создать новый проект'])
 async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)):
     db_dict = db_info.dict()
     db_dict['user_token'] = user_data.token
@@ -99,5 +99,5 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     db_token = generate_single_part_token(db.id)
     await DatabasesDAO.update(filter_by={'id': db.id},token=db_token)
     await UsersDAO.update(filter_by={'id': user_data.id}, databases=user_data.databases+[db_token])
-    #migrate(database_url=f'{db.dialect}://{db.user}:{db.password}@{db.host}:{db.port}/{db.db_name}', qdrant_url=f'http://{server_host}:6333', collenction_name='', vector_size='')
+    #migrate(database_url=f'{db.dialect}://{db.user}:{db.password}@{db.host}:{db.port}/{db.db_name}', qdrant_url="http://qdrant:6333", collenction_name='', vector_size='')
 
