@@ -6,7 +6,7 @@ from messages.dao import MessagesDAO, ConversationsDAO
 
 from messages.schemas import NewMessage
 
-from app.messages.models import Conversation
+from messages.models import Conversation
 
 app = FastAPI()
 
