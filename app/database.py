@@ -6,8 +6,6 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 
 from config import get_db_url
-import pytz
-moscow_timezone = pytz.timezone('Europe/Moscow')
 DATABASE_URL = get_db_url()
 
 engine = create_async_engine(DATABASE_URL)
