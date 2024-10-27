@@ -1,3 +1,4 @@
+import jwt
 from fastapi import APIRouter, HTTPException, status, Response, Depends, UploadFile, Request, File
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
@@ -11,7 +12,10 @@ from users.auth import authenticate_user, create_access_token
 from users.schemas import SUserAuth
 from users.models import User
 from users.dependencies import get_current_user
+from databases.schemas import NewDB
+from config import get_auth_data
 
+from app.databases.dao import DatabasesDAO
 
 router = APIRouter(prefix='/user', tags=['Работа с пользователями'])
 templates = Jinja2Templates(directory='templates')
@@ -73,6 +77,14 @@ async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)
         return {"message": "Токены успешно добавлены!"}
     else:
         return {"message": "Ошибка при добавлении токенов"}
-@router.post("/db_connect")
-async def db_connect(db_url:str, user_data: User = Depends(get_current_user)):
-    await UsersDAO.update(filter_by={'id': user_data.id}, database=db_url)
+@router.post("/new_project")
+async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)):
+    db_dict = db_info.dict()
+    db_dict['user_token'] = user_data.token
+    db_dict['token'] = ''
+    await DatabasesDAO.add(**db_dict)
+    db = await DatabasesDAO.find_one_or_none(user_token=user_data.token)
+    auth_data = get_auth_data()
+    db_token = jwt.encode(db.id, auth_data['secret_key'], algorithm=auth_data['algorithm'])
+    await DatabasesDAO.update(filter_by={'id': db.id},token=db_token)
+    await UsersDAO.update(filter_by={'id': user_data.id}, databases=user_data.databases+[db.token])

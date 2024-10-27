@@ -12,6 +12,7 @@ sys.path.insert(0, dirname(dirname(abspath(__file__))))
 from database import Base
 from users.models import User
 from messages.models import Message, Conversation
+from databases.models import Database
 
 
 config = context.config

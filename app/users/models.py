@@ -1,7 +1,9 @@
 from datetime import date
 from database import Base, str_uniq, int_pk, str_null_true
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, text, Text
+from sqlalchemy import ForeignKey, text, Text, ARRAY, Column, String
+
+
 class User(Base):
     id: Mapped[int_pk]
     password: Mapped[str_null_true]
@@ -11,7 +13,7 @@ class User(Base):
     last_name: Mapped[str]
     token: Mapped[str_uniq]
     tokens_count: Mapped[int]
-    database: Mapped[str]
+    databases = Column(ARRAY(String))
 
     extend_existing = True
 
