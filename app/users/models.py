@@ -13,7 +13,7 @@ class User(Base):
     last_name: Mapped[str]
     token: Mapped[str_uniq]
     tokens_count: Mapped[int]
-    databases = Column(ARRAY(String))
+    databases = Column(ARRAY(String), default=list)
 
     extend_existing = True
 
