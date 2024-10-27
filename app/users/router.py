@@ -99,4 +99,5 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     db_token = generate_single_part_token(db.id)
     await DatabasesDAO.update(filter_by={'id': db.id},token=db_token)
     await UsersDAO.update(filter_by={'id': user_data.id}, databases=user_data.databases+[db_token])
+    #migrate(database_url=f'{db.dialect}://{db.user}:{db.password}@{db.host}:{db.port}/{db.db_name}', qdrant_url=f'http://{server_host}:6333', collenction_name='', vector_size='')
 

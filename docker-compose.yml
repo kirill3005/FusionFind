@@ -54,6 +54,16 @@ services:
     networks:
       - develop_project_network
 
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./qdrant_data:/qdrant/storage
+    networks:
+      - develop_project_network
+
   nginx:
     image: nginx:alpine
     ports:
@@ -76,3 +86,4 @@ networks:
 volumes:
   pgdata:
     driver: local
+
