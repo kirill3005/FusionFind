@@ -16,7 +16,7 @@ class Database(Base):
     vector_column: Mapped[str]
     metadata_columns = Column(ARRAY(String), default=list)
     image_save_path: Mapped[str]
-    image_columns  = Column(ARRAY(String), default=list)
+    image_column: Mapped[str]
 
     extend_existing = True
 

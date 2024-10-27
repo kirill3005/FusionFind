@@ -118,6 +118,7 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
         'mapping': {
             'table': db.table_name,  # Имя таблицы в реляционной базе данных
             'vector_column': db.vector_column,  # Колонка с текстом для векторизации
+            'image_column': db.image_column,
             'metadata_columns': db.metadata_columns,  # Колонки с метаданными
         },
         'image_save_path': db.image_save_path,  # Директория для сохранения изображений
