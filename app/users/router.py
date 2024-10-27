@@ -17,7 +17,7 @@ from config import get_auth_data
 
 from databases.dao import DatabasesDAO
 
-from app.users.auth import generate_single_part_token
+from users.auth import generate_single_part_token
 
 router = APIRouter(prefix='/user', tags=['Работа с пользователями'])
 templates = Jinja2Templates(directory='templates')
@@ -79,13 +79,24 @@ async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)
         return {"message": "Токены успешно добавлены!"}
     else:
         return {"message": "Ошибка при добавлении токенов"}
+
+
+@router.get('/token', tags=['Запросить свой токен'])
+async def get_token(request: Request, user_data: User = Depends(get_current_user)):
+    return user_data.token
+
+@router.get('/projects')
+async def get_projects(user_data: User = Depends(get_current_user)):
+    return await DatabasesDAO.find_all(user_token=user_data.token)
+
 @router.post("/new_project")
 async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)):
     db_dict = db_info.dict()
     db_dict['user_token'] = user_data.token
     db_dict['token'] = ''
     await DatabasesDAO.add(**db_dict)
-    db = await DatabasesDAO.find_all(user_token=user_data.token)[-1]
+    db = (await DatabasesDAO.find_all(user_token=user_data.token))[-1]
     db_token = generate_single_part_token(db.id)
     await DatabasesDAO.update(filter_by={'id': db.id},token=db_token)
     await UsersDAO.update(filter_by={'id': user_data.id}, databases=user_data.databases+[db_token])
+
