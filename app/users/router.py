@@ -17,6 +17,8 @@ from config import get_auth_data
 
 from databases.dao import DatabasesDAO
 
+from app.users.auth import generate_single_part_token
+
 router = APIRouter(prefix='/user', tags=['Работа с пользователями'])
 templates = Jinja2Templates(directory='templates')
 
@@ -83,8 +85,7 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     db_dict['user_token'] = user_data.token
     db_dict['token'] = ''
     await DatabasesDAO.add(**db_dict)
-    db = DatabasesDAO.find_all(user_token=user_data.token)[-1]
-    auth_data = get_auth_data()
-    db_token = jwt.encode({'sub':db.id}, auth_data['secret_key'], algorithm=auth_data['algorithm'])
+    db = await DatabasesDAO.find_all(user_token=user_data.token)[-1]
+    db_token = generate_single_part_token(db.id)
     await DatabasesDAO.update(filter_by={'id': db.id},token=db_token)
     await UsersDAO.update(filter_by={'id': user_data.id}, databases=user_data.databases+[db_token])

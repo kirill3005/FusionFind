@@ -60,3 +60,15 @@ async def check_access_token(
     request.state.user = user
 
     return authorization_header
+
+import secrets
+import base64
+
+def generate_single_part_token(db_id: int):
+    # Генерируем случайные байты
+    random_bytes = secrets.token_bytes(16)
+    # Создаем строку на основе id и случайных байт
+    token_input = f"{db_id}-{base64.urlsafe_b64encode(random_bytes).decode('utf-8')}"
+    # Кодируем строку в base64
+    token = base64.urlsafe_b64encode(token_input.encode('utf-8')).decode('utf-8').rstrip("=")
+    return token
