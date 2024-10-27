@@ -39,11 +39,10 @@ class BaseDAO:
                 session.add(new_instance)
                 try:
                     await session.commit()
-                    await session.refresh(new_instance)
                 except SQLAlchemyError as e:
                     await session.rollback()
                     raise e
-                return new_instance
+                return new_instance.id
 
     @classmethod
     async def update(cls, filter_by, **values):
