@@ -1,9 +1,10 @@
 services:
   python:
+    image: python-app-base
     container_name: fastapi-app
     build:
       context: .
-      dockerfile: docker/Dockerfile1
+      dockerfile: docker/Dockerfile
     environment:
       PYTHONUNBUFFERED: 1
       PYTHONDONTWRITEBYTECODE: 1
@@ -16,10 +17,11 @@ services:
     networks:
       - develop_project_network
   python2:
+    image: python-app-base
     container_name: api
     build:
       context: .
-      dockerfile: docker/Dockerfile2
+      dockerfile: docker/Dockerfile
     environment:
       PYTHONUNBUFFERED: 1
       PYTHONDONTWRITEBYTECODE: 1

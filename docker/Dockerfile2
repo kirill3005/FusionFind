@@ -1,6 +1,0 @@
-FROM python:3.10
-
-COPY requirements1.txt .
-RUN pip install --no-cache-dir --upgrade -r requirements1.txt
-
-WORKDIR /app
