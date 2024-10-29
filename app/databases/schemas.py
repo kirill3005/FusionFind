@@ -12,6 +12,10 @@ class NewDB(BaseModel):
     user: str = Field(..., description='Логин пользователя базы данных')
     password: str = Field(..., description='Пароль')
     db_name: str = Field(..., description='Название базы данных товаров')
-
+    table_name: str = Field(...)
+    vector_column: str = Field(...)
+    metadata_columns: List[str] = Field(...)
+    image_save_path: str = Field(...)
+    image_column: str = Field(...)
 
 
