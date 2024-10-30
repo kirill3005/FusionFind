@@ -106,14 +106,14 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     config = {
         'database': {
             'dialect': db.dialect,  # Тип реляционной базы данных (может быть MySQL, SQLite, etc.)
-            'host': {db.host},  # Хост базы данных
+            'host': db.host,  # Хост базы данных
             'port': int(db.port),  # Порт базы данных
-            'user': {db.user},  # Имя пользователя для базы данных
+            'user': db.user,  # Имя пользователя для базы данных
             'password': db.password,  # Пароль для подключения к базе данных
             'database': db.db_name  # Название базы данных
         },
         'qdrant': {
-            'host': '194.87.56.165',  # Хост для подключения к Qdrant
+            'host': '87.249.44.115',  # Хост для подключения к Qdrant
             'port': 6333,  # Порт для подключения к Qdrant
             'collection_name': db_token,  # Имя коллекции в Qdrant
             'vector_size': 1024  # Размер векторов (должен соответствовать модели)
