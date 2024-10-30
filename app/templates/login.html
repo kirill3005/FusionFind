@@ -1,64 +1,191 @@
-<!doctype html>
-<html lang="ru">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аутинтификация</title>
-    <link rel="stylesheet" type="text/css" href="/static/style/register.css">
-</head>
-<body>
-<div class="container">
-    <h1>Форма Входа</h1>
-    <form id="login-form" class="registration-form">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit" id="login-button" class="submit-button" onclick="loginFunction(event)">Войти</button>
-    </form>
-</div>
-
-<!-- Подключаем внешний JavaScript-файл -->
-<script>
-    async function loginFunction(event) {
-        event.preventDefault();  // Предотвращаем стандартное действие формы
-
-        // Получаем форму и собираем данные из неё
-        const form = document.getElementById('login-form');
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const response = await fetch('/user/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            // Проверяем успешность ответа
-            if (!response.ok) {
-                // Получаем данные об ошибке
-                const errorData = await response.json();
-                displayErrors(errorData);  // Отображаем ошибки
-                return;  // Прерываем выполнение функции
-            }
-
-            const result = await response.json();
-
-            if (result.message) {  // Проверяем наличие сообщения о успешной регистрации
-                window.location.href = '/user/profile';  // Перенаправляем пользователя на страницу логина
-            } else {
-                alert(result.message || 'Неизвестная ошибка');
-            }
-        } catch (error) {
-            console.error('Ошибка:', error);
-            alert('Произошла ошибка при входе. Пожалуйста, попробуйте снова.');
-        }
+<html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход - FusionFind</title>
+  <style>
+    :root {
+      --primary-color: #34D399;
+      --primary-dark: #059669;
+      --text-color: #1F2937;
+      --bg-light: #F0FDF4;
+      --border-color: #E5E7EB;
     }
 
-</script>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica', Arial, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-color);
+      height: 100%;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo a {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
+
+    .auth-box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .tab.active {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      margin-bottom: -2px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .button {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .form-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <a href="/">FusionFind</a>
+    </div>
+
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <div class="tab active" id="loginTab">Вход</div>
+        <div class="tab" id="registerTab">Регистрация</div>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <button type="submit" class="button" onclick=loginFunction(event)>Войти</button>
+
+        <div class="form-footer">
+          <a href="/reset-password">Забыли пароль?</a>
+        </div>
+      </form>
+
+      <form id="registration-form" style="display: none;">
+        <div class="form-group">
+          <label for="firstName">Имя</label>
+          <input type="text" id="firstName" name="first_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="last_name">Фамилия</label>
+          <input type="text" id="last_name" name=last_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email1">Email</label>
+          <input type="email" id="email1" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Пароль</label>
+          <input type="password" id="regPassword" name="password" class="form-control" required>
+        </div>
+
+
+        <button type="submit" class="button" onclick=regFunction(event)>Зарегистрироваться</button>
+      </form>
+    </div>
+  </div>
+
+
 </body>
 </html>

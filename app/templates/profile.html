@@ -1,310 +1,442 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Т—Банк - Профиль пользователя</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica', Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+<html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FusionFind - Профиль</title>
+  <style>
+    :root {
+      --primary-color: #34D399;
+      --primary-dark: #059669;
+      --text-color: #1F2937;
+      --bg-light: #F0FDF4;
+      --border-color: #E5E7EB;
+    }
 
-        .header {
-            background-color: white;
-            padding: 20px 0;
-            border-bottom: 1px solid #e0e0e0;
-            max-height: 6%;
-        }
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica', Arial, sans-serif;
+      background-color: white;
+      color: var(--text-color);
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    .header {
+      background-color: white;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-color);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+    }
 
-        .logo {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #000;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .nav ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
 
-        .nav ul li {
-            margin-right: 20px;
-        }
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
 
-        .nav ul li a {
-            color: #333;
-            text-decoration: none;
-            font-size: 0.9em;
-        }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+    }
 
-        .main-content {
-            margin-top: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+    .button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
 
-        .sidebar {
-            flex: 1;
-            min-width: 250px;
-        }
+    .button:hover {
+      background-color: var(--primary-dark);
+    }
 
-        .content {
-            flex: 3;
-            min-width: 300px;
-        }
+    .profile-layout {
+      display: flex;
+      gap: 30px;
+      margin-top: 100px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 20px;
+    }
 
-        .profile-header {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    .sidebar {
+      width: 250px;
+      flex-shrink: 0;
+    }
 
-        .profile-header h1 {
-            margin: 0;
-            font-size: 2em;
-            color: #333;
-        }
+    .tab-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
 
-        .profile-info p {
-            margin: 5px 0;
-            color: #666;
-        }
+    .tab-item {
+      padding: 15px 20px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s ease;
+    }
 
-        .section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    .tab-item:last-child {
+      border-bottom: none;
+    }
 
-        .section h2 {
-            color: #333;
-            margin-top: 0;
-        }
+    .tab-item.active {
+      background-color: var(--bg-light);
+      color: var(--primary-dark);
+      font-weight: 500;
+    }
 
-        .bot-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
+    .tab-item:hover:not(.active) {
+      background-color: #f9fafb;
+    }
 
-        .bot-card {
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            transition: box-shadow 0.3s ease;
-        }
+    .tab-content {
+      flex-grow: 1;
+      display: none;
+    }
 
-        .bot-card:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .tab-content.active {
+      display: block;
+    }
 
-        .bot-card h3 {
-            margin: 0 0 10px 0;
-            color: #333;
-        }
+    .api-docs {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      border: 1px solid var(--border-color);
+    }
 
-        .bot-card p {
-            margin: 5px 0;
-            color: #666;
-            font-size: 0.9em;
-        }
+    .code-block {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 15px 0;
+      font-family: monospace;
+    }
 
-        .button {
-            display: inline-block;
-            background-color: #ffdd2d;
-            color: #333;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
+    .method {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-right: 8px;
+      font-weight: 500;
+    }
 
-        .button:hover {
-            background-color: #ffd700;
-        }
+    .method-get {
+      background: #0284c7;
+      color: white;
+    }
 
-        .personal-account {
-            background-color: #ffdd2d;
-            color: #333;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
+    .method-post {
+      background: #059669;
+      color: white;
+    }
 
-        .usage-chart {
-            width: 100%;
-            height: 300px;
-            margin-top: 20px;
-        }
+    .balance-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .usage-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
+    .balance-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .stat-box {
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            flex: 1;
-            margin: 0 10px;
-        }
+    .balance-amount {
+      font-size: 2em;
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
 
-        .stat-box h3 {
-            margin: 0;
-            font-size: 1.2em;
-            color: #333;
-        }
+    .balance-label {
+      color: #666;
+      font-size: 0.9em;
+    }
 
-        .stat-box p {
-            margin: 5px 0 0;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #ffdd2d;
-        }
+    .profile-header {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
 
-        .token-balance {
-            font-size: 2em;
-            font-weight: bold;
-            color: #ffdd2d;
-            margin: 20px 0;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    .token-info {
+      display: flex;
+      gap: 30px;
+    }
+
+    .token-box {
+      background: var(--bg-light);
+      padding: 15px 25px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      position: relative;
+      transition: background-color 0.2s ease;
+    }
+
+    .token-box:hover {
+      background: #E6F7EF;
+    }
+
+    .token-box.clicked::after {
+      content: 'Скопировано!';
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-dark);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      animation: fadeOut 1.5s forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .bots-section {
+      margin-top: 40px;
+    }
+
+    .bots-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .bots-header h2 {
+      margin: 0;
+    }
+
+    .bots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .bot-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .bot-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .bot-status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .status-active {
+      background: #ECFDF5;
+      color: #059669;
+    }
+
+    .bot-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .bot-action {
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+
+    .action-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .action-secondary {
+      background: #F3F4F6;
+      color: var(--text-color);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      background: var(--bg-light);
+      border-radius: 12px;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      .bots-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-<header class="header">
+  <header class="header">
     <div class="container nav">
-        <img src = 'https://cdn.tbank.ru/static/pfa-multimedia/images/de8a4fa0-0b29-4901-a678-35f93d358cdf.png' alt="Лого" width=13%>
-        <ul>
-            <li><a href="https://www.tbank.ru/">Частным лицам</a></li>
-            <li><a href="https://www.tbank.ru/business">Бизнесу</a></li>
-            <li><a href="https://www.tbank.ru/premium">Премиум</a></li>
-            <li><a href="https://www.tbank.ru/more">Еще</a></li>
-        </ul>
-        <a href="https://www.tbank.ru/my" class="personal-account">Личный кабинет</a>
+      <a href="/" class="logo">FusionFind</a>
+      <nav class="nav-links">
+        <a href="/user/new_project" class="button">Создать бота</a>
+      </nav>
     </div>
-</header>
+  </header>
 
-<main class="container main-content">
+  <div class="profile-layout">
     <div class="sidebar">
-        <div class="section">
-            <h2>Баланс токенов</h2>
-            <div class="token-balance">{{profile.tokens}}</div>
-            <a href="buy_tokens" class="button">Пополнить баланс</a>
-        </div>
-        <div class="section">
-            <h2>Ваш бот</h2>
-            <div class="bot-list">
-                <div class="bot-card">
-                    <h3>Мультимодальный шоппинг-ассистент</h3>
-                    <p>Помогает в выборе и покупке товаров онлайн</p>
-                    <p>Создан: 15.05.2023</p>
-                </div>
-            </div>
-        </div>
+      <ul class="tab-list">
+        <li class="tab-item active" data-tab="account">Аккаунт</li>
+        <li class="tab-item" data-tab="bots">Управление ботами</li>
+        <li class="tab-item" data-tab="api">API Документация</li>
+      </ul>
     </div>
 
-    <div class="content">
-        <div class="profile-header">
-            <h1>Использование бота</h1>
-            <div class="profile-info">
-                <p>Статистика использования вашего бота</p>
-            </div>
+    <div class="tab-content active" id="account">
+      <div class="balance-section">
+        <div class="balance-info">
+          <span class="balance-amount">{{profile.tokens_count}}</span>
+          <span class="balance-label">токенов</span>
+        </div>
+        <a href="/user/buy_tokens" class="button">Пополнить баланс</a>
+      </div>
+
+      <div class="profile-header">
+        <div class="token-info">
+          <div class="token-box" id="apiToken">
+            <h3>API Токен</h3>
+            <p>{{profile.token}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="bots">
+      <div class="bots-header">
+        <h2>Управление ботами</h2>
+        <a href="/user/new_project" class="button">Создать бота</a>
+      </div>
+      <div class="bots-grid">
+          {% for database in databases %}
+        <div class="bot-card">
+          <span class="bot-status status-active">Активен</span>
+          <h3>Поиск по магазину</h3>
+          <p>База данных: {{database.dialect}}</p>
+          <p>Таблица: {{database.table_name}}</p>
+          <div class="bot-actions">
+            <a href="/my/bots/1/edit" class="bot-action action-primary">Настройки</a>
+            <a href="/my/bots/1/stats" class="bot-action action-secondary">Статистика</a>
+          </div>
         </div>
 
-        <section class="section">
-            <h2>Статистика использования</h2>
-            <div class="usage-stats">
-                <div class="stat-box">
-                    <h3>Запросы за день</h3>
-                    <p>124</p>
-                </div>
-                <div class="stat-box">
-                    <h3>Токены за день</h3>
-                    <p>1,240</p>
-                </div>
-                <div class="stat-box">
-                    <h3>Всего запросов</h3>
-                    <p>3,578</p>
-                </div>
-            </div>
-            <canvas id="usageChart" class="usage-chart"></canvas>
-        </section>
+      </div>
     </div>
-</main>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('usageChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['1 Май', '8 Май', '15 Май', '22 Май', '29 Май', '5 Июнь'],
-                datasets: [{
-                    label: 'Использование токенов',
-                    data: [1200, 1900, 3000, 5000, 4200, 3300],
-                    borderColor: '#ffdd2d',
-                    backgroundColor: 'rgba(255, 221, 45, 0.1)',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Количество токенов'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Дата'
-                        }
-                    }
-                }
-            }
-        });
+    <div class="tab-content" id="api">
+      <div class="api-docs">
+        <h2>API Документация</h2>
+        <p>Используйте наше API для интеграции поисковых ботов в ваши приложения.</p>
 
-        const botCards = document.querySelectorAll('.bot-card');
-        botCards.forEach(card => {
-            card.addEventListener('click', function () {
-                alert('Переход на страницу бота: ' + this.querySelector('h3').textContent);
-            });
-        });
+        <h3>Аутентификация</h3>
+        <p>Добавьте ваш API токен в заголовок запроса:</p>
+        <div class="code-block">
+          Authorization: Bearer ff_8x92m4k1p9v7n3j5h2g4f
+        </div>
+
+        <h3>Endpoints</h3>
+        <h4><span class="method method-get">GET</span> /api/v1/bots</h4>
+        <p>Получить список всех ваших ботов</p>
+        <div class="code-block">
+          GET https://api.fusionfind.com/v1/bots
+        </div>
+
+        <h4><span class="method method-post">POST</span> /api/v1/search</h4>
+        <p>Выполнить поиск через бота</p>
+        <div class="code-block">
+          POST https://api.fusionfind.com/v1/search
+          {
+            "bot_id": "bot_123",
+            "query": "search text"
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('apiToken').addEventListener('click', function() {
+      const tokenText = this.querySelector('p').textContent;
+      navigator.clipboard.writeText(tokenText).then(() => {
+        this.classList.add('clicked');
+        setTimeout(() => {
+          this.classList.remove('clicked');
+        }, 1500);
+      });
     });
-</script>
-</body>
-</html>
+
+    document.querySelectorAll('.tab-item').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs and contents
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body></html>

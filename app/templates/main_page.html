@@ -1,31 +1,32 @@
-<html><head><base href="https://www.fusionfind.com/">
+<html><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FusionFind - AI Платформа Ассистентов для Покупок</title>
+  <title>FusionFind - Современный поиск по товарам</title>
   <style>
     :root {
       --primary-color: #34D399;
       --primary-dark: #059669;
       --text-color: #1F2937;
       --bg-light: #F0FDF4;
+      --border-color: #E5E7EB;
     }
 
     body, html {
       margin: 0;
       padding: 0;
       font-family: 'Helvetica', Arial, sans-serif;
-      background-color: var(--bg-light);
+      background-color: white;
       color: var(--text-color);
     }
 
     .header {
       background-color: white;
       padding: 20px 0;
-      border-bottom: 1px solid #E5E7EB;
+      border-bottom: 1px solid var(--border-color);
       position: fixed;
       width: 100%;
       top: 0;
-      z-index: 1000;
+      z-index: 100;
     }
 
     .container {
@@ -47,18 +48,16 @@
       text-decoration: none;
     }
 
-    .nav ul {
-      list-style: none;
+    .nav-links {
       display: flex;
       gap: 30px;
-      margin: 0;
-      padding: 0;
+      align-items: center;
     }
 
-    .nav ul li a {
-      color: var(--text-color);
+    .nav-link {
       text-decoration: none;
-      font-size: 0.95em;
+      color: var(--text-color);
+      font-weight: 500;
     }
 
     .button {
@@ -68,8 +67,6 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: bold;
-      border: none;
-      cursor: pointer;
       transition: background-color 0.3s ease;
     }
 
@@ -78,215 +75,245 @@
     }
 
     .hero {
-      padding: 0;
-      background: linear-gradient(45deg, var(--bg-light), white);
+      padding: 250px 0 180px;
       text-align: center;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(to bottom, var(--bg-light), white);
     }
 
     .hero h1 {
       font-size: 4em;
-      margin-bottom: 30px;
-      background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+      color: var(--text-color);
     }
 
     .hero p {
       font-size: 1.2em;
-      max-width: 800px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
+      color: #666;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .features {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 60px;
     }
 
     .feature-card {
+      text-align: center;
       padding: 30px;
-      border-radius: 15px;
-      background: white;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-5px);
     }
 
     .feature-icon {
       width: 60px;
       height: 60px;
-      background: var(--primary-color);
+      margin-bottom: 20px;
+      fill: var(--primary-color);
+    }
+
+    .feature-card h3 {
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+
+    .feature-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .auth-button {
+      background-color: transparent;
+      color: var(--text-color);
+      border: 2px solid var(--primary-color);
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-left: 20px;
+    }
+
+    .auth-button:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .testimonials {
+      padding: 100px 0;
+      background-color: var(--bg-light);
+    }
+
+    .testimonials h2 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 60px;
+      color: var(--text-color);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .testimonial-card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .testimonial-content {
+      font-size: 1.1em;
+      line-height: 1.6;
+      color: #4B5563;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .author-avatar {
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
+      background-color: var(--primary-color);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 20px;
       color: white;
+      font-weight: bold;
     }
 
-    .chat-interface {
-      background: white;
-      border-radius: 10px;
+    .author-info {
+      line-height: 1.4;
+    }
+
+    .author-name {
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .author-company {
+      color: #6B7280;
+      font-size: 0.9em;
+    }
+
+    .showcase {
+      padding: 100px 0;
+      background-color: var(--bg-light);
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    .showcase-image {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .showcase-content {
       padding: 20px;
-      height: 300px;
-      overflow-y: auto;
+    }
+
+    .showcase-content h2 {
+      font-size: 2.5em;
       margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      color: var(--text-color);
     }
 
-    .message {
-      margin-bottom: 15px;
-      padding: 10px 15px;
-      border-radius: 10px;
-      max-width: 80%;
+    .showcase-content p {
+      font-size: 1.2em;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 30px;
     }
 
-    .bot-message {
-      background: var(--bg-light);
-      margin-right: auto;
-    }
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
 
-    .user-message {
-      background: var(--primary-color);
-      color: white;
-      margin-left: auto;
-    }
+      .hero h1 {
+        font-size: 2.8em;
+      }
 
-    .chat-input {
-      flex: 1;
-      padding: 12px;
-      border: 1px solid #E5E7EB;
-      border-radius: 8px;
-      font-size: 1em;
-    }
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
 
-    .chat-input:focus {
-      outline: 2px solid var(--primary-color);
-      border-color: transparent;
+      .showcase-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
   <header class="header">
     <div class="container nav">
       <a href="/" class="logo">FusionFind</a>
-      <ul>
-        <li><a href="/features">Возможности</a></li>
-        <li><a href="/pricing">Тарифы</a></li>
-        <li><a href="/marketplace">Маркетплейс</a></li>
-        <li><a href="/docs">Документация</a></li>
-      </ul>
-      <div>
-        <a href="/my" class="button">Личный кабинет</a>
-      </div>
+      <nav class="nav-links">
+        <a href="/user/login" class="nav-link">Профиль</a>
+        <a href="/user/login" class="nav-link">Купить токены</a>
+        <a href="/user/login" class="button">Создать бота</a>
+        <a href="/user/login" class="auth-button">Войти / Регистрация</a>
+      </nav>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="container">
-      <h1>AI Платформа Ассистентов для Покупок</h1>
-      <p>Создавайте умных ботов для вашего бизнеса. Мультимодальные ассистенты с поддержкой изображений, голоса и текста.</p>
-      <a href="/create-bot" class="button">Создать бота</a>
-    </div>
-  </section>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Улучшенный поиск <br>для вашего магазина</h1>
+        <p>FusionFind использует передовые алгоритмы для точного поиска товаров по вашей базе данных. Создайте поискового бота для вашего магазина всего за пару минут.</p>
+        <a href="/user/new_project" class="button">Создать бота</a>
+      </div>
+    </section>
 
-  <section class="features">
-    <div class="container">
-      <h2>Возможности платформы</h2>
+    <section class="features container">
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">🎯</div>
-          <h3>Мультимодальность</h3>
-          <p>Работа с текстом, изображениями и голосом в едином интерфейсе</p>
+          <svg class="feature-icon" viewBox="0 0 24 24">
+            <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 18.5L4 16v-2l8 4 8-4v2l-8 4.5zm0-5l-8-4V8l8 4 8-4v3.5l-8 4z"/>
+          </svg>
+          <h3>Точный поиск</h3>
+          <p>Находит релевантные товары даже при опечатках и неточных запросах</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🔄</div>
-          <h3>Интеграции</h3>
-          <p>Готовые интеграции с популярными платформами электронной коммерции</p>
+          <svg class="feature-icon" viewBox="0 0 24 24">
+            <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
+          </svg>
+          <h3>Быстрая интеграция</h3>
+          <p>Простое подключение к вашей существующей базе данных товаров</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Аналитика</h3>
-          <p>Подробная статистика и аналитика использования ботов</p>
+          <svg class="feature-icon" viewBox="0 0 24 24">
+            <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+          </svg>
+          <h3>Умные подсказки</h3>
+          <p>Интеллектуальные рекомендации на основе поисковых запросов</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="stats">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-item">
-          <h3>1M+</h3>
-          <p>Активных ботов</p>
-        </div>
-        <div class="stat-item">
-          <h3>50K+</h3>
-          <p>Компаний</p>
-        </div>
-        <div class="stat-item">
-          <h3>99.9%</h3>
-          <p>Доступность</p>
-        </div>
-        <div class="stat-item">
-          <h3>24/7</h3>
-          <p>Поддержка</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta">
-    <div class="container">
-      <h2>Попробуйте демо</h2>
-      <p>Оцените возможности платформы прямо сейчас</p>
-
-      <div class="demo-bot">
-        <div class="chat-interface">
-          <div class="message bot-message">
-            Здравствуйте! Я демо-версия ассистента для покупок. Как я могу вам помочь?
-          </div>
-          <div class="message user-message">
-            Хочу купить новый телефон
-          </div>
-          <div class="message bot-message">
-            Отлично! Давайте подберем для вас идеальный смартфон. Какой у вас бюджет?
-          </div>
-        </div>
-        <div class="input-group">
-          <input type="text" class="chat-input" placeholder="Введите ваше сообщение...">
-          <button class="button">Отправить</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    document.querySelector('.chat-input').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        const message = this.value;
-        if (message.trim()) {
-          const chatInterface = document.querySelector('.chat-interface');
-
-          const userMessage = document.createElement('div');
-          userMessage.className = 'message user-message';
-          userMessage.textContent = message;
-          chatInterface.appendChild(userMessage);
-
-          setTimeout(() => {
-            const botMessage = document.createElement('div');
-            botMessage.className = 'message bot-message';
-            botMessage.textContent = 'Спасибо за ваше сообщение! Это демо-версия, для полного функционала создайте своего бота.';
-            chatInterface.appendChild(botMessage);
-
-            chatInterface.scrollTop = chatInterface.scrollHeight;
-          }, 1000);
-
-          this.value = '';
-        }
-      }
-    });
-  </script>
+    </section>
+  </main>
 </body></html>

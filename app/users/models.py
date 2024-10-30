@@ -7,7 +7,6 @@ from sqlalchemy import ForeignKey, text, Text, ARRAY, Column, String
 class User(Base):
     id: Mapped[int_pk]
     password: Mapped[str_null_true]
-    phone_number: Mapped[str_uniq]
     email: Mapped[str_uniq]
     first_name: Mapped[str]
     last_name: Mapped[str]

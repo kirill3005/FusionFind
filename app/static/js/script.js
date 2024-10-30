@@ -122,14 +122,16 @@ async function logoutFunction() {
 
 async function buy_tokens(event) {
         event.preventDefault();
-        // Получаем форму и собираем данные из неё
-        alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
+        const input = document.getElementById('tokenAmount');
+        let count = parseInt(input.value);
+
         try {
             const response = await fetch('/user/buy_tokens', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({'tokens': count})
             });
 
             // Проверяем успешность ответа
@@ -149,6 +151,6 @@ async function buy_tokens(event) {
             }
         } catch (error) {
             console.error('Ошибка:', error);
-            alert('Произошла ошибка. Пожалуйста, попробуйте снова.'+error);
+            alert('Произошла ошибка. Пожалуйста, попробуйте снова.' + error);
         }
     }

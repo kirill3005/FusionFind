@@ -23,9 +23,6 @@ from db_migration.migrate import DataMigration
 router = APIRouter(prefix='/user')
 templates = Jinja2Templates(directory='templates')
 
-@router.get("/register")
-async def register_user_template(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})
 
 @router.post("/register", tags=['Регистрация нового пользователя (номер телефона вводить в правильном виде)'])
 async def register_user(user_data: SUserRegister, response: Response):
@@ -65,7 +62,7 @@ async def auth_user(response: Response, user_data: SUserAuth):
 
 @router.get("/profile")
 async def get_me(request: Request, user_data: User = Depends(get_current_user)):
-    return templates.TemplateResponse(name='profile.html', context={'request': request, 'profile':user_data})
+    return templates.TemplateResponse(name='profile.html', context={'request': request, 'profile':user_data, "databases": DatabasesDAO.find_all(user_token=user_data.token)})
 
 
 @router.get("/buy_tokens")
