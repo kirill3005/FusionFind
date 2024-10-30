@@ -7,6 +7,9 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 import sys
 from os.path import dirname, abspath
+
+from config import get_db_url
+
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 from database import Base
@@ -16,7 +19,7 @@ from databases.models import Database
 
 
 config = context.config
-config.set_main_option("sqlalchemy.url", "postgresql+asyncpg://admin:password@localhost:5440/fast_api")
+config.set_main_option("sqlalchemy.url", get_db_url())
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 target_metadata = Base.metadata

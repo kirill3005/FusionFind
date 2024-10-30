@@ -19,7 +19,7 @@ settings = Settings()
 
 
 def get_db_url():
-    return ("postgresql+asyncpg://admin:password@postgres_fast_api:5432/fast_api")
+    return (f"postgresql+asyncpg://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}")
 
 def get_auth_data():
     return {"secret_key": settings.SECRET_KEY, "algorithm": settings.ALGORITHM}
