@@ -129,4 +129,5 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     }
     migrator = DataMigration(config)
     migrator.migrate()
+    return 'Миграция завершена успешно!'
 
