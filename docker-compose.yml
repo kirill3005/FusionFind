@@ -1,36 +1,50 @@
 services:
-  main:
-    container_name: fastapi-app
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-    environment:
-      PYTHONUNBUFFERED: 1
-      PYTHONDONTWRITEBYTECODE: 1
-    volumes:
-      - ${PROJECT_VOLUME}:/app:cached
-    ports:
-      - "8000:8000"
-    command:
-      ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-    networks:
-      - develop_project_network
-  api:
-    container_name: api
-    build:
-      context: .
-      dockerfile: docker/Dockerfile1
-    environment:
-      PYTHONUNBUFFERED: 1
-      PYTHONDONTWRITEBYTECODE: 1
-    volumes:
-      - ${PROJECT_VOLUME}:/app:cached
-    ports:
-      - "8001:8001"
-    command:
-      [ "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8001" ]
-    networks:
-      - develop_project_network
+ builder:
+  build:
+   context: .
+   dockerfile: docker/Dockerfile.builder
+  image: my-python-app:builder
+  volumes:
+   - ./:/app:cached
+  command: ["sh", "-c", "exit 0"]
+
+ main:
+  build:
+   context: .
+   dockerfile: docker/Dockerfile.main
+   target: main
+  image: my-python-app:main
+  environment:
+   PYTHONUNBUFFERED: 1
+   PYTHONDONTWRITEBYTECODE: 1
+  volumes:
+   - ${PROJECT_VOLUME}:/app:cached
+  ports:
+   - "8000:8000"
+  command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+  networks:
+   - develop_project_network
+  depends_on:
+   - builder
+
+ api:
+  build:
+   context: .
+   dockerfile: docker/Dockerfile.api
+   target: api
+  image: my-python-app:api
+  environment:
+   PYTHONUNBUFFERED: 1
+   PYTHONDONTWRITEBYTECODE: 1
+  volumes:
+   - ${PROJECT_VOLUME}:/app:cached
+  ports:
+   - "8001:8001"
+  command: ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8001"]
+  networks:
+   - develop_project_network
+  depends_on:
+   - builder
   postgres:
     image: postgres:latest
     container_name: postgres_fast_api

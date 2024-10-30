@@ -1,9 +1,7 @@
-FROM python:3.10
+FROM builder AS main
 
-WORKDIR /app
+# Используем кэш:
+COPY --from=builder /app /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
-
-COPY . .
+# Код приложения для main
+# ...

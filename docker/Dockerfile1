@@ -1,8 +1,7 @@
-FROM python:3.10
+FROM builder AS api
 
-WORKDIR /app
+# Используем кэш:
+COPY --from=builder /app /app
 
-COPY requirements1.txt .
-RUN pip install --no-cache-dir --upgrade -r requirements1.txt
-
-COPY . .
+# Код приложения для api
+# ...
