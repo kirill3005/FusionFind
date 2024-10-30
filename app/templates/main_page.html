@@ -1,354 +1,292 @@
-<html>
-<head>
-    <base href="https://www.tbank.ru/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Т—Банк - AI Shopping Assistant Platform</title>
-    <style>
-        :root {
-            --primary-color: #ffdd2d;
-            --text-color: #333;
-            --bg-light: #f5f5f5;
-        }
+<html><head><base href="https://www.fusionfind.com/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FusionFind - AI Платформа Ассистентов для Покупок</title>
+  <style>
+    :root {
+      --primary-color: #34D399;
+      --primary-dark: #059669;
+      --text-color: #1F2937;
+      --bg-light: #F0FDF4;
+    }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica', Arial, sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-color);
-        }
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica', Arial, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-color);
+    }
 
-        .header {
-            background-color: white;
-            padding: 20px 0;
-            border-bottom: 1px solid #e0e0e0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
+    .header {
+      background-color: white;
+      padding: 20px 0;
+      border-bottom: 1px solid #E5E7EB;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .logo {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #000;
-            text-decoration: none;
-        }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
 
-        .nav ul {
-            list-style: none;
-            display: flex;
-            gap: 30px;
-            margin: 0;
-            padding: 0;
-        }
+    .nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
 
-        .nav ul li a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 0.95em;
-        }
+    .nav ul li a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 0.95em;
+    }
 
-        .button {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-        .button:hover {
-            background-color: #ffd700;
-        }
+    .button:hover {
+      background-color: var(--primary-dark);
+    }
 
-        .hero {
-            padding: 160px 0 80px;
-            background: linear-gradient(45deg, #fff, #f8f9fa);
-            text-align: center;
-        }
+    .hero {
+      padding: 0;
+      background: linear-gradient(45deg, var(--bg-light), white);
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .hero h1 {
-            font-size: 3.5em;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #333, #666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .hero h1 {
+      font-size: 4em;
+      margin-bottom: 30px;
+      background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        .hero p {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    .hero p {
+      font-size: 1.2em;
+      max-width: 800px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
 
-        .features {
-            padding: 80px 0;
-            background: white;
-        }
+    .feature-card {
+      padding: 30px;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 40px;
-        }
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
 
-        .feature-card {
-            padding: 30px;
-            border-radius: 15px;
-            background: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: white;
+    }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
+    .chat-interface {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
 
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+    .message {
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
 
-        .stats {
-            padding: 80px 0;
-            background: var(--bg-light);
-        }
+    .bot-message {
+      background: var(--bg-light);
+      margin-right: auto;
+    }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            text-align: center;
-        }
+    .user-message {
+      background: var(--primary-color);
+      color: white;
+      margin-left: auto;
+    }
 
-        .stat-item h3 {
-            font-size: 2.5em;
-            margin: 0;
-            color: var(--text-color);
-        }
+    .chat-input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 1em;
+    }
 
-        .cta {
-            padding: 100px 0;
-            text-align: center;
-            background: white;
-        }
-
-        .demo-bot {
-            margin-top: 60px;
-            padding: 30px;
-            background: var(--bg-light);
-            border-radius: 15px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .chat-interface {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            border-radius: 10px;
-            max-width: 80%;
-        }
-
-        .bot-message {
-            background: #f0f0f0;
-            margin-right: auto;
-        }
-
-        .user-message {
-            background: var(--primary-color);
-            margin-left: auto;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        .floating-bot {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-    </style>
+    .chat-input:focus {
+      outline: 2px solid var(--primary-color);
+      border-color: transparent;
+    }
+  </style>
 </head>
 <body>
-<header class="header">
+  <header class="header">
     <div class="container nav">
-        <img src = 'https://cdn.tbank.ru/static/pfa-multimedia/images/de8a4fa0-0b29-4901-a678-35f93d358cdf.png' alt="Лого" width=13%>
-        <ul>
-            <li><a href="/features">Возможности</a></li>
-            <li><a href="/pricing">Тарифы</a></li>
-            <li><a href="/marketplace">Маркетплейс</a></li>
-            <li><a href="/docs">Документация</a></li>
-        </ul>
-        <div>
-            <a href="/my" class="button">Личный кабинет</a>
-        </div>
+      <a href="/" class="logo">FusionFind</a>
+      <ul>
+        <li><a href="/features">Возможности</a></li>
+        <li><a href="/pricing">Тарифы</a></li>
+        <li><a href="/marketplace">Маркетплейс</a></li>
+        <li><a href="/docs">Документация</a></li>
+      </ul>
+      <div>
+        <a href="/my" class="button">Личный кабинет</a>
+      </div>
     </div>
-</header>
+  </header>
 
-<section class="hero">
+  <section class="hero">
     <div class="container">
-        <h1>AI Shopping Assistant Platform</h1>
-        <p>Создавайте умных ботов для вашего бизнеса. Мультимодальные ассистенты с поддержкой изображений, голоса и
-            текста.</p>
-        <a href="/create-bot" class="button">Создать бота</a>
+      <h1>AI Платформа Ассистентов для Покупок</h1>
+      <p>Создавайте умных ботов для вашего бизнеса. Мультимодальные ассистенты с поддержкой изображений, голоса и текста.</p>
+      <a href="/create-bot" class="button">Создать бота</a>
     </div>
-</section>
+  </section>
 
-<section class="features">
+  <section class="features">
     <div class="container">
-        <h2>Возможности платформы</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Мультимодальность</h3>
-                <p>Работа с текстом, изображениями и голосом в едином интерфейсе</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>Интеграции</h3>
-                <p>Готовые интеграции с популярными платформами электронной коммерции</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Аналитика</h3>
-                <p>Подробная статистика и аналитика использования ботов</p>
-            </div>
+      <h2>Возможности платформы</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Мультимодальность</h3>
+          <p>Работа с текстом, изображениями и голосом в едином интерфейсе</p>
         </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Интеграции</h3>
+          <p>Готовые интеграции с популярными платформами электронной коммерции</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Аналитика</h3>
+          <p>Подробная статистика и аналитика использования ботов</p>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="stats">
+  <section class="stats">
     <div class="container">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <h3>1M+</h3>
-                <p>Активных ботов</p>
-            </div>
-            <div class="stat-item">
-                <h3>50K+</h3>
-                <p>Компаний</p>
-            </div>
-            <div class="stat-item">
-                <h3>99.9%</h3>
-                <p>Uptime</p>
-            </div>
-            <div class="stat-item">
-                <h3>24/7</h3>
-                <p>Поддержка</p>
-            </div>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <h3>1M+</h3>
+          <p>Активных ботов</p>
         </div>
+        <div class="stat-item">
+          <h3>50K+</h3>
+          <p>Компаний</p>
+        </div>
+        <div class="stat-item">
+          <h3>99.9%</h3>
+          <p>Доступность</p>
+        </div>
+        <div class="stat-item">
+          <h3>24/7</h3>
+          <p>Поддержка</p>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="cta">
+  <section class="cta">
     <div class="container">
-        <h2>Попробуйте демо-версию</h2>
-        <p>Оцените возможности платформы прямо сейчас</p>
+      <h2>Попробуйте демо</h2>
+      <p>Оцените возможности платформы прямо сейчас</p>
 
-        <div class="demo-bot">
-            <div class="chat-interface">
-                <div class="message bot-message">
-                    Привет! Я демо-версия shopping-ассистента. Как я могу помочь вам сегодня?
-                </div>
-                <div class="message user-message">
-                    Хочу купить новый телефон
-                </div>
-                <div class="message bot-message">
-                    Отлично! Давайте подберем для вас идеальный смартфон. Какой бюджет вы рассматриваете?
-                </div>
-            </div>
-            <div class="input-group">
-                <input type="text" class="chat-input" placeholder="Введите сообщение...">
-                <button class="button">Отправить</button>
-            </div>
+      <div class="demo-bot">
+        <div class="chat-interface">
+          <div class="message bot-message">
+            Здравствуйте! Я демо-версия ассистента для покупок. Как я могу вам помочь?
+          </div>
+          <div class="message user-message">
+            Хочу купить новый телефон
+          </div>
+          <div class="message bot-message">
+            Отлично! Давайте подберем для вас идеальный смартфон. Какой у вас бюджет?
+          </div>
         </div>
+        <div class="input-group">
+          <input type="text" class="chat-input" placeholder="Введите ваше сообщение...">
+          <button class="button">Отправить</button>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<script>
-    document.querySelector('.chat-input').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            const message = this.value;
-            if (message.trim()) {
-                const chatInterface = document.querySelector('.chat-interface');
+  <script>
+    document.querySelector('.chat-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const message = this.value;
+        if (message.trim()) {
+          const chatInterface = document.querySelector('.chat-interface');
 
-                // Add user message
-                const userMessage = document.createElement('div');
-                userMessage.className = 'message user-message';
-                userMessage.textContent = message;
-                chatInterface.appendChild(userMessage);
+          const userMessage = document.createElement('div');
+          userMessage.className = 'message user-message';
+          userMessage.textContent = message;
+          chatInterface.appendChild(userMessage);
 
-                // Add bot response
-                setTimeout(() => {
-                    const botMessage = document.createElement('div');
-                    botMessage.className = 'message bot-message';
-                    botMessage.textContent = 'Спасибо за ваше сообщение! Это демо-версия, для полного функционала создайте своего бота.';
-                    chatInterface.appendChild(botMessage);
+          setTimeout(() => {
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message bot-message';
+            botMessage.textContent = 'Спасибо за ваше сообщение! Это демо-версия, для полного функционала создайте своего бота.';
+            chatInterface.appendChild(botMessage);
 
-                    chatInterface.scrollTop = chatInterface.scrollHeight;
-                }, 1000);
+            chatInterface.scrollTop = chatInterface.scrollHeight;
+          }, 1000);
 
-                this.value = '';
-            }
+          this.value = '';
         }
+      }
     });
-</script>
-</body>
-</html>
+  </script>
+</body></html>

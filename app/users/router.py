@@ -124,7 +124,7 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
             'image_column': db.image_column,
             'metadata_columns': db.metadata_columns,  # Колонки с метаданными
         },
-        'image_save_path': db.image_save_path,  # Директория для сохранения изображений
+        'image_save_path': './images',  # Директория для сохранения изображений
         'lang': 'en'  # Язык
     }
     migrator = DataMigration(config)

@@ -15,7 +15,6 @@ class NewDB(BaseModel):
     table_name: str = Field(...)
     vector_column: str = Field(...)
     metadata_columns: List[str] = Field(...)
-    image_save_path: str = Field(...)
     image_column: str = Field(...)
 
 
