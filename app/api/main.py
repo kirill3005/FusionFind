@@ -25,7 +25,7 @@ async def main_api(token: str):
 @app.post('/new_conversation/{token}/{project_token}',tags=['Создать новый диалог'])
 async def new_conv(token: str, project_token: str):
     await ConversationsDAO.add(**{'user_token': token, 'project_token': project_token})
-    conv = (await ConversationsDAO.find_all(user_token=token, project_token=token))[-1]
+    conv = (await ConversationsDAO.find_all(user_token=token, project_token=project_token))[-1]
     return conv.id
 
 

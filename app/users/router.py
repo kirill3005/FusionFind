@@ -81,6 +81,9 @@ async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)
     else:
         return {"message": "Ошибка при добавлении токенов"}
 
+@router.get('/tokens_count',tags=['Запросить колво токенов'])
+async def tokens_count(user_data: User = Depends(get_current_user)):
+    return user_data.tokens_count
 
 @router.get('/token', tags=['Запросить свой токен'])
 async def get_token(request: Request, user_data: User = Depends(get_current_user)):
