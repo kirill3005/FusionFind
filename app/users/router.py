@@ -90,6 +90,10 @@ async def get_token(request: Request, user_data: User = Depends(get_current_user
 async def get_projects(user_data: User = Depends(get_current_user)):
     return await DatabasesDAO.find_all(user_token=user_data.token)
 
+@router.get('/new_project')
+async def new_project_get(request: Request):
+    return templates.TemplateResponse(name='new_project.html', context={'request': request})
+
 @router.post("/new_project", tags=['Создать новый проект'])
 async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)):
     db_dict = db_info.dict()
@@ -126,5 +130,4 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     }
     migrator = DataMigration(config)
     migrator.migrate()
-    return 'Миграция завершена успешно!'
-
+    return {'message':"OK"}

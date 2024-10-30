@@ -1,0 +1,268 @@
+<html><head><base href="https://www.fusionfind.com/my/bots/new">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FusionFind - Создание бота</title>
+  <style>
+    :root {
+      --primary-color: #34D399;
+      --primary-dark: #059669;
+      --text-color: #1F2937;
+      --bg-light: #F0FDF4;
+      --border-color: #E5E7EB;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica', Arial, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-color);
+    }
+
+    .header {
+      background-color: white;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
+
+    .main-content {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 10px;
+      padding: 40px;
+    }
+
+    .create-form {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group select {
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .metadata-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .metadata-tag {
+      background: var(--primary-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .metadata-tag button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0 5px;
+    }
+
+    .add-metadata {
+      background: none;
+      border: 2px dashed var(--border-color);
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+
+    .add-metadata:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+    }
+
+    .button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+
+    .button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .button.secondary {
+      background-color: white;
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .button.secondary:hover {
+      background-color: var(--bg-light);
+    }
+  </style>
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="/" class="logo">FusionFind</a>
+      <div>
+        <a href="/user/buy_tokens" class="button secondary">Купить токены</a>
+        <a href="user/profile" class="button">Выйти</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="main-content">
+      <h1>Настройка базы данных товаров</h1>
+      <form class="create-form" id="db-form">
+        <div class="form-group">
+          <label for="db-type">Тип базы данных</label>
+          <input type="text" id="db-type" name="dialect" required>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="db-host">Хост</label>
+            <input type="text" id="db-host" name="host" required>
+          </div>
+
+          <div class="form-group">
+            <label for="db-port">Порт</label>
+            <input type="text" id="db-port" name="port" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="db-user">Имя пользователя</label>
+            <input type="text" id="db-user" name="user" required>
+          </div>
+
+          <div class="form-group">
+            <label for="db-password">Пароль</label>
+            <input type="password" id="db-password" name="password" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="db-name">Название базы данных</label>
+          <input type="text" id="db-name" name="db_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="table-name">Название таблицы с товарами</label>
+          <input type="text" id="table-name" name="table_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="description-column">Колонка с описаниями товаров</label>
+          <input type="text" id="description-column" name="vector_column" required>
+        </div>
+
+        <div class="form-group">
+          <label for="image-column">Колонка с фото товаров</label>
+          <input type="text" id="image-column" name="image_column" required>
+        </div>
+
+        <div class="form-group">
+          <label>Колонки с метаданными</label>
+          <div class="metadata-fields" id="metadata-list">
+          </div>
+          <button type="button" class="add-metadata" id="add-metadata" name="metadata_columns">+ Добавить поле метаданной</button>
+        </div>
+
+        <div class="actions">
+          <a href="/my/bots" class="button secondary">Отмена</a>
+          <button type="submit" class="button">Создать бота</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const metadataList = document.getElementById('metadata-list');
+    const addMetadataButton = document.getElementById('add-metadata');
+
+    function addMetadataField(value = '') {
+      const tag = document.createElement('div');
+      tag.className = 'metadata-tag';
+      const fieldName = value || prompt('Введите название колонки с метаданными:');
+
+      if (fieldName) {
+        tag.innerHTML = `
+          ${fieldName}
+          <button type="button" onclick="this.parentElement.remove()">×</button>
+        `;
+        metadataList.appendChild(tag);
+      }
+    }
+
+    addMetadataButton.addEventListener('click', () => addMetadataField());
+
+
+  </script>
+</body></html>

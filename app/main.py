@@ -4,7 +4,7 @@ from starlette.templating import Jinja2Templates
 
 from users.router import router as router_users, templates
 from fastapi.staticfiles import StaticFiles
-from router import router as main_router
+
 import uvicorn
 
 app = FastAPI()
@@ -17,7 +17,7 @@ async def index(request: Request):
     return templates.TemplateResponse('main_page.html', context={'request': request})
 
 app.include_router(router_users)
-app.include_router(main_router)
+
 
 
 
