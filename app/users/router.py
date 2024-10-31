@@ -38,6 +38,8 @@ async def register_user(user_data: SUserRegister, response: Response):
             detail='Пользователь с таким номером телефона уже существует')
     user_dict = user_data.dict()
     user_dict['password'] = await get_password_hash(user_data.password)
+    user_dict['tokens_count'] = 100
+    user_dict['token'] = ''
     await UsersDAO.add(**user_dict)
     user = await UsersDAO.find_one_or_none(email=user_data.email)
     access_token = await create_access_token({"sub": str(user.id)})
