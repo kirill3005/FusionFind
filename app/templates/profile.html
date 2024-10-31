@@ -1,438 +1,447 @@
-<html><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FusionFind - Профиль</title>
-  <style>
-    :root {
-      --primary-color: #34D399;
-      --primary-dark: #059669;
-      --text-color: #1F2937;
-      --bg-light: #F0FDF4;
-      --border-color: #E5E7EB;
-    }
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FusionFind - Профиль</title>
+    <style>
+        :root {
+            --primary-color: #34D399;
+            --primary-dark: #059669;
+            --text-color: #1F2937;
+            --bg-light: #F0FDF4;
+            --border-color: #E5E7EB;
+        }
 
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: 'Helvetica', Arial, sans-serif;
-      background-color: white;
-      color: var(--text-color);
-    }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: white;
+            color: var(--text-color);
+        }
 
-    .header {
-      background-color: white;
-      padding: 20px 0;
-      border-bottom: 1px solid var(--border-color);
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 100;
-    }
+        .header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .logo {
-      font-size: 1.5em;
-      font-weight: bold;
-      color: var(--primary-dark);
-      text-decoration: none;
-    }
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
 
-    .nav-links {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-    }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
 
-    .nav-link {
-      text-decoration: none;
-      color: var(--text-color);
-      font-weight: 500;
-    }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+        }
 
-    .button {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
+        .button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
 
-    .button:hover {
-      background-color: var(--primary-dark);
-    }
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
 
-    .profile-layout {
-      display: flex;
-      gap: 30px;
-      margin-top: 100px;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 20px;
-    }
+        .profile-layout {
+            display: flex;
+            gap: 30px;
+            margin-top: 100px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+        }
 
-    .sidebar {
-      width: 250px;
-      flex-shrink: 0;
-    }
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
 
-    .tab-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      background: white;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      overflow: hidden;
-    }
+        .tab-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
 
-    .tab-item {
-      padding: 15px 20px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--border-color);
-      transition: background-color 0.2s ease;
-    }
+        .tab-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s ease;
+        }
 
-    .tab-item:last-child {
-      border-bottom: none;
-    }
+        .tab-item:last-child {
+            border-bottom: none;
+        }
 
-    .tab-item.active {
-      background-color: var(--bg-light);
-      color: var(--primary-dark);
-      font-weight: 500;
-    }
+        .tab-item.active {
+            background-color: var(--bg-light);
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
 
-    .tab-item:hover:not(.active) {
-      background-color: #f9fafb;
-    }
+        .tab-item:hover:not(.active) {
+            background-color: #f9fafb;
+        }
 
-    .tab-content {
-      flex-grow: 1;
-      display: none;
-    }
+        .tab-content {
+            flex-grow: 1;
+            display: none;
+        }
 
-    .tab-content.active {
-      display: block;
-    }
+        .tab-content.active {
+            display: block;
+        }
 
-    .api-docs {
-      background: white;
-      border-radius: 12px;
-      padding: 30px;
-      border: 1px solid var(--border-color);
-    }
+        .api-docs {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
 
-    .code-block {
-      background: #1a1a1a;
-      color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin: 15px 0;
-      font-family: monospace;
-    }
+        .code-block {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: monospace;
+        }
 
-    .method {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      margin-right: 8px;
-      font-weight: 500;
-    }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+            font-weight: 500;
+        }
 
-    .method-get {
-      background: #0284c7;
-      color: white;
-    }
+        .method-get {
+            background: #0284c7;
+            color: white;
+        }
 
-    .method-post {
-      background: #059669;
-      color: white;
-    }
+        .method-post {
+            background: #059669;
+            color: white;
+        }
 
-    .balance-section {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      border: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .balance-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .balance-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .balance-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .balance-amount {
-      font-size: 2em;
-      font-weight: bold;
-      color: var(--primary-dark);
-    }
+        .balance-amount {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
 
-    .balance-label {
-      color: #666;
-      font-size: 0.9em;
-    }
+        .balance-label {
+            color: #666;
+            font-size: 0.9em;
+        }
 
-    .profile-header {
-      background: white;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
-    }
+        .profile-header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
 
-    .token-info {
-      display: flex;
-      gap: 30px;
-    }
+        .token-info {
+            display: flex;
+            gap: 30px;
+        }
 
-    .token-box {
-      background: var(--bg-light);
-      padding: 15px 25px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      cursor: pointer;
-      position: relative;
-      transition: background-color 0.2s ease;
-    }
+        .token-box {
+            background: var(--bg-light);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease;
+        }
 
-    .token-box:hover {
-      background: #E6F7EF;
-    }
+        .token-box:hover {
+            background: #E6F7EF;
+        }
 
-    .token-box.clicked::after {
-      content: 'Скопировано!';
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary-dark);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 0.8em;
-      animation: fadeOut 1.5s forwards;
-    }
+        .token-box.clicked::after {
+            content: 'Скопировано!';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-dark);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            animation: fadeOut 1.5s forwards;
+        }
 
-    @keyframes fadeOut {
-      0% { opacity: 1; }
-      70% { opacity: 1; }
-      100% { opacity: 0; }
-    }
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
 
-    .bots-section {
-      margin-top: 40px;
-    }
+        .bots-section {
+            margin-top: 40px;
+        }
 
-    .bots-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+        .bots-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    .bots-header h2 {
-      margin: 0;
-    }
+        .bots-header h2 {
+            margin: 0;
+        }
 
-    .bots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
+        .bots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
 
-    .bot-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid var(--border-color);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+        .bot-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
 
-    .bot-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+        .bot-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-    .bot-status {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 0.85em;
-      font-weight: 500;
-      margin-bottom: 15px;
-    }
+        .bot-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
 
-    .status-active {
-      background: #ECFDF5;
-      color: #059669;
-    }
+        .status-active {
+            background: #ECFDF5;
+            color: #059669;
+        }
 
-    .bot-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
+        .bot-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
 
-    .bot-action {
-      padding: 8px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 0.9em;
-      font-weight: 500;
-    }
+        .bot-action {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
 
-    .action-primary {
-      background: var(--primary-color);
-      color: white;
-    }
+        .action-primary {
+            background: var(--primary-color);
+            color: white;
+        }
 
-    .action-secondary {
-      background: #F3F4F6;
-      color: var(--text-color);
-    }
+        .action-secondary {
+            background: #F3F4F6;
+            color: var(--text-color);
+        }
 
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      background: var(--bg-light);
-      border-radius: 12px;
-      color: #666;
-    }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            color: #666;
+        }
 
-    @media (max-width: 768px) {
-      .bots-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        @media (max-width: 768px) {
+            .bots-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="header">
+<header class="header">
     <div class="container nav">
-      <a href="/" class="logo">FusionFind</a>
-      <nav class="nav-links">
-        <a href="/user/new_project" class="button">Создать бота</a>
-      </nav>
+        <a href="/" class="logo">FusionFind</a>
+        <nav class="nav-links">
+            <a href="/user/new_project" class="button">Создать бота</a>
+        </nav>
     </div>
-  </header>
+</header>
 
-  <div class="profile-layout">
+<div class="profile-layout">
     <div class="sidebar">
-      <ul class="tab-list">
-        <li class="tab-item active" data-tab="account">Аккаунт</li>
-        <li class="tab-item" data-tab="bots">Управление ботами</li>
-        <li class="tab-item" data-tab="api">API Документация</li>
-      </ul>
+        <ul class="tab-list">
+            <li class="tab-item active" data-tab="account">Аккаунт</li>
+            <li class="tab-item" data-tab="bots">Управление ботами</li>
+            <li class="tab-item" data-tab="api">API Документация</li>
+        </ul>
     </div>
 
     <div class="tab-content active" id="account">
-      <div class="balance-section">
-        <div class="balance-info">
-          <span class="balance-amount">{{profile.tokens_count}}</span>
-          <span class="balance-label">токенов</span>
+        <div class="balance-section">
+            <div class="balance-info">
+                <span class="balance-amount">{{profile.tokens_count}}</span>
+                <span class="balance-label">токенов</span>
+            </div>
+            <a href="/user/buy_tokens" class="button">Пополнить баланс</a>
         </div>
-        <a href="/user/buy_tokens" class="button">Пополнить баланс</a>
-      </div>
 
-      <div class="profile-header">
-        <div class="token-info">
-          <div class="token-box" id="apiToken">
-            <h3>API Токен</h3>
-            <p>{{profile.token}}</p>
-          </div>
+        <div class="profile-header">
+            <div class="token-info">
+                <div class="token-box" id="apiToken">
+                    <h3>API Токен</h3>
+                    <p>{{profile.token}}</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <div class="tab-content" id="bots">
-      <div class="bots-header">
-        <h2>Управление ботами</h2>
-        <a href="/user/new_project" class="button">Создать бота</a>
-      </div>
-      <div class="bots-grid">
-          {% for database in databases %}
-        <div class="bot-card">
-          <span class="bot-status status-active">Активен</span>
-          <h3>{{database.db_name}}</h3>
-          <p>Токен: {{database.token}}</p>
-          <p>Таблица: {{database.table_name}}</p>
-          <div class="bot-actions">
-            <a  href="user/bot_info/{{database.id}}" class="bot-action action-primary">Посмотреть информацию</a>
-            <!--<a href="/my/bots/1/edit" class="bot-action action-primary">Настройки</a>
-            <a href="/my/bots/1/stats" class="bot-action action-secondary">Статистика</a>
-          </div>-->
+        <div class="bots-header">
+            <h2>Управление ботами</h2>
+            <a href="/user/new_project" class="button">Создать бота</a>
         </div>
-        {%endfor%}
-      </div>
+        <div class="bots-grid">
+            {% for database in databases %}
+            <div class="bot-card">
+                <span class="bot-status status-active">Активен</span>
+                <h3>{{database.db_name}}</h3>
+                <p>Токен: {{database.token}}</p>
+                <p>Таблица: {{database.table_name}}</p>
+                <div class="bot-actions">
+                    <a href="bot_info/{{database.id}}" class="bot-action action-primary">Посмотреть информацию</a>
+                    <!--<a href="/my/bots/1/edit" class="bot-action action-primary">Настройки</a>
+                    <a href="/my/bots/1/stats" class="bot-action action-secondary">Статистика</a>
+                  </div>-->
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+
+        <div class="tab-content" id="api">
+            <div class="api-docs">
+                <h2>API Документация</h2>
+                <p>Используйте наше API для интеграции поисковых ботов в ваши приложения.</p>
+
+
+                <h3>Endpoints</h3>
+                <h4><span class="method method-get">POST</span></h4>
+                <p>Начать новый диалог</p>
+                <div class="code-block">
+                    POST 'http://api.fusionfind.ru/?apitoken=Ваш токен пользователя&db_token=Токен базы данных`
+                </div>
+
+                <h4><span class="method method-post">POST</span></h4>
+                <p>Отправка сообщения боту</p>
+                <div class="code-block">
+                    POST http://api.fusionfind.ru/?apitoken=Ваш токен пользователя&db_token=Токен базы
+                    данных&conversation_id=id диалога`<br>
+                    {
+                    "message": "",
+                    "photo": ""
+                    }
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+    <script>
+        document.getElementById('apiToken').addEventListener('click', function () {
+            const tokenText = this.querySelector('p').textContent;
+            navigator.clipboard.writeText(tokenText).then(() => {
+                this.classList.add('clicked');
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 1500);
+            });
+        });
 
-    <div class="tab-content" id="api">
-      <div class="api-docs">
-        <h2>API Документация</h2>
-        <p>Используйте наше API для интеграции поисковых ботов в ваши приложения.</p>
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-
-        <h3>Endpoints</h3>
-        <h4><span class="method method-get">POST</span></h4>
-        <p>Начать новый диалог</p>
-        <div class="code-block">
-          POST 'http://api.fusionfind.ru/?apitoken=Ваш токен пользователя&db_token=Токен базы данных`
-        </div>
-
-        <h4><span class="method method-post">POST</span></h4>
-        <p>Отправка сообщения боту</p>
-        <div class="code-block">
-          POST http://api.fusionfind.ru/?apitoken=Ваш токен пользователя&db_token=Токен базы данных&conversation_id=id диалога`<br>
-          {
-            "message": "",
-            "photo": ""
-          }
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.getElementById('apiToken').addEventListener('click', function() {
-      const tokenText = this.querySelector('p').textContent;
-      navigator.clipboard.writeText(tokenText).then(() => {
-        this.classList.add('clicked');
-        setTimeout(() => {
-          this.classList.remove('clicked');
-        }, 1500);
-      });
-    });
-
-    document.querySelectorAll('.tab-item').forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Remove active class from all tabs and contents
-        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-        // Add active class to clicked tab and corresponding content
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab).classList.add('active');
-      });
-    });
-  </script>
-</body></html>
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
