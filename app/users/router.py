@@ -59,11 +59,15 @@ async def auth_user(response: Response, user_data: SUserAuth):
 
 @router.get("/profile")
 async def get_me(request: Request, user_data: User = Depends(get_current_user)):
+    if user_data is None:
+        return RedirectResponse(url='/user/login')
     return templates.TemplateResponse(name='profile.html', context={'request': request, 'profile':user_data, "databases": await DatabasesDAO.find_all(user_token=user_data.token)})
 
 
 @router.get("/buy_tokens")
-async def buy_tokens_page(request: Request):
+async def buy_tokens_page(request: Request, user_data: User = Depends(get_current_user)):
+    if user_data is None:
+        return RedirectResponse(url='/user/login')
     return templates.TemplateResponse(name='buy_tokens.html', context={'request': request})
 
 @router.put('/buy_tokens', tags=['Купить токены'])
@@ -77,6 +81,8 @@ async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)
 
 @router.get('/tokens_count',tags=['Запросить колво токенов'])
 async def tokens_count(user_data: User = Depends(get_current_user)):
+    if user_data is None:
+        return RedirectResponse(url='/user/login')
     return user_data.tokens_count
 
 @router.get('/token', tags=['Запросить свой токен'])
@@ -85,10 +91,14 @@ async def get_token(request: Request, user_data: User = Depends(get_current_user
 
 @router.get('/projects', tags=['Запросить свои проекты'])
 async def get_projects(user_data: User = Depends(get_current_user)):
+    if user_data is None:
+        return RedirectResponse(url='/user/login')
     return await DatabasesDAO.find_all(user_token=user_data.token)
 
 @router.get('/new_project')
-async def new_project_get(request: Request):
+async def new_project_get(request: Request, user_data: User = Depends(get_current_user)):
+    if user_data is None:
+        return RedirectResponse(url='/user/login')
     return templates.TemplateResponse(name='new_project.html', context={'request': request})
 
 @router.post("/new_project", tags=['Создать новый проект'])
