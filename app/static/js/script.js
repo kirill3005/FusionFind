@@ -164,6 +164,8 @@ async function newProject(event) {
     const form = document.getElementById('db-form');
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
+    const loader = document.getElementById('loader');
+    loader.style.display = 'flex';
 
     try {
         const response = await fetch('/user/new_project', {
@@ -185,6 +187,7 @@ async function newProject(event) {
         const result = await response.json();
 
         if (result.message) {  // Проверяем наличие сообщения о успешной регистрации
+            loader.style.display = 'none';
             window.location.href = '/user/profile';  // Перенаправляем пользователя на страницу логина
         } else {
             alert(result.message || 'Неизвестная ошибка');

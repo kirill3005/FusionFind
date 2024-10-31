@@ -136,6 +136,9 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
         'image_save_path': './images',  # Директория для сохранения изображений
         'lang': 'en'  # Язык
     }
-    migrator = DataMigration(config)
-    migrator.migrate()
+    try:
+        migrator = DataMigration(config)
+        migrator.migrate()
+    except:
+        return {'message':'Ошибка'}
     return {'message':"OK"}

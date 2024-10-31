@@ -390,26 +390,21 @@
         <h2>API Документация</h2>
         <p>Используйте наше API для интеграции поисковых ботов в ваши приложения.</p>
 
-        <h3>Аутентификация</h3>
-        <p>Добавьте ваш API токен в заголовок запроса:</p>
-        <div class="code-block">
-          Authorization: Bearer ff_8x92m4k1p9v7n3j5h2g4f
-        </div>
 
         <h3>Endpoints</h3>
-        <h4><span class="method method-get">GET</span> /api/v1/bots</h4>
-        <p>Получить список всех ваших ботов</p>
+        <h4><span class="method method-get">POST</span></h4>
+        <p>Начать новый диалог</p>
         <div class="code-block">
-          GET https://api.fusionfind.com/v1/bots
+          GET 'http://api.fusionfind.ru/?apitoken=|Ваш токен пользователя|&db_token=|Токен базы данных|`
         </div>
 
-        <h4><span class="method method-post">POST</span> /api/v1/search</h4>
-        <p>Выполнить поиск через бота</p>
+        <h4><span class="method method-post">POST</span></h4>
+        <p>Отправка сообщения боту</p>
         <div class="code-block">
-          POST https://api.fusionfind.com/v1/search
+          POST http://api.fusionfind.ru/?apitoken=|Ваш токен пользователя|&db_token=|Токен базы данных|&conversation_id=|id диалога|`
           {
-            "bot_id": "bot_123",
-            "query": "search text"
+            "message": "",
+            "photo": ""
           }
         </div>
       </div>
