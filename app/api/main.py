@@ -9,7 +9,7 @@ from messages.schemas import NewMessage
 from messages.models import Conversation
 from typing import Optional
 
-from app.databases.dao import DatabasesDAO
+from databases.dao import DatabasesDAO
 
 app = FastAPI()
 
