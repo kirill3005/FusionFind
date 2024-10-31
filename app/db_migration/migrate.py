@@ -142,10 +142,13 @@ class DataMigration:
     # Подключение к базе данных
     def connect_to_db(self):
         connection_string = self.create_db_connection_string()
-        engine = create_engine(connection_string)
-        Session = sessionmaker(bind=engine)
-        session = Session()
-        return engine, session
+        try:
+            engine = create_engine(connection_string)
+            Session = sessionmaker(bind=engine)
+            session = Session()
+            return engine, session
+        except:
+            pass
 
     # Подключение к Qdrant
     def connect_to_qdrant(self):
