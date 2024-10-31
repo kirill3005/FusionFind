@@ -331,6 +331,18 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        code {
+            background-color: #e7e7e7;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
@@ -392,56 +404,47 @@
                 {%endfor%}
             </div>
         </div>
+    </div>
+    <div class="tab-content" id="api">
+        <div class="api-docs">
+            <h2>Создание нового диалога</h2>
+            <p>Чтобы начать новый диалог, выполните POST-запрос на адрес:</p>
+            <pre><code>http://api.fusionfind.ru/?apitoken=&lt;Ваш токен пользователя&gt;&amp;db_token=&lt;Токен базы данных&gt;</code></pre>
+            <p>При успешном выполнении вы получите сообщение вида:</p>
+            <pre><code>{<br>'message':'OK',<br>'conv_id':&lt;id диалога&gt;<br>}</code></pre>
 
-        <div class="tab-content" id="api">
-            <div class="api-docs">
-                <h2>API Документация</h2>
-                <p>Используйте наше API для интеграции поисковых ботов в ваши приложения.</p>
-
-
-                <h3>Endpoints</h3>
-                <h4><span class="method method-get">POST</span></h4>
-                <p>Начать новый диалог</p>
-                <div class="code-block">
-                    POST 'http://api.fusionfind.ru/?apitoken=Ваш токен пользователя&db_token=Токен базы данных`
-                </div>
-
-                <h4><span class="method method-post">POST</span></h4>
-                <p>Отправка сообщения боту</p>
-                <div class="code-block">
-                    POST http://api.fusionfind.ru/?apitoken=Ваш токен пользователя&db_token=Токен базы
-                    данных&conversation_id=id диалога`<br>
-                    {
-                    "message": "",
-                    "photo": ""
-                    }
-                </div>
-            </div>
+            <h2>Отправка сообщения</h2>
+            <p>Чтобы отправить сообщение, выполните POST-запрос на адрес:</p>
+            <pre><code>http://api.fusionfind.ru/?apitoken=&lt;Ваш токен пользователя&gt;&amp;db_token=&lt;Токен базы данных&gt;&amp;conversation_id=&lt;id диалога&gt;</code></pre>
+            <p>с телом запроса:</p>
+            <pre><code>{'message':&lt;Текст сообщения от пользователя&gt;, <br>'photo':&lt;Фото, отправленное пользователем, если есть&gt;}</code></pre>
+            <p>При успешном выполнении вы получите сообщение вида:</p>
+            <pre><code>{<br>'message':'OK',<br>'response':&lt;Ответ модели&gt;<br>}</code></pre>
         </div>
     </div>
 </div>
-    <script>
-        document.getElementById('apiToken').addEventListener('click', function () {
-            const tokenText = this.querySelector('p').textContent;
-            navigator.clipboard.writeText(tokenText).then(() => {
-                this.classList.add('clicked');
-                setTimeout(() => {
-                    this.classList.remove('clicked');
-                }, 1500);
-            });
+<script>
+    document.getElementById('apiToken').addEventListener('click', function () {
+        const tokenText = this.querySelector('p').textContent;
+        navigator.clipboard.writeText(tokenText).then(() => {
+            this.classList.add('clicked');
+            setTimeout(() => {
+                this.classList.remove('clicked');
+            }, 1500);
         });
+    });
 
-        document.querySelectorAll('.tab-item').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs and contents
-                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-item').forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-                // Add active class to clicked tab and corresponding content
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.tab).classList.add('active');
-            });
+            // Add active class to clicked tab and corresponding content
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.tab).classList.add('active');
         });
-    </script>
+    });
+</script>
 </body>
 </html>
