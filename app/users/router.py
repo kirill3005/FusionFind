@@ -31,11 +31,6 @@ async def register_user(user_data: SUserRegister, response: Response):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail='Пользователь с таким email уже существует')
-    user = await UsersDAO.find_one_or_none(phone_number=user_data.phone_number)
-    if user:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail='Пользователь с таким номером телефона уже существует')
     user_dict = user_data.dict()
     user_dict['password'] = await get_password_hash(user_data.password)
     user_dict['tokens_count'] = 100
@@ -64,7 +59,7 @@ async def auth_user(response: Response, user_data: SUserAuth):
 
 @router.get("/profile")
 async def get_me(request: Request, user_data: User = Depends(get_current_user)):
-    return templates.TemplateResponse(name='profile.html', context={'request': request, 'profile':user_data, "databases": DatabasesDAO.find_all(user_token=user_data.token)})
+    return templates.TemplateResponse(name='profile.html', context={'request': request, 'profile':user_data, "databases": await DatabasesDAO.find_all(user_token=user_data.token)})
 
 
 @router.get("/buy_tokens")

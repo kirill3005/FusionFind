@@ -8,7 +8,7 @@ from alembic import context
 import sys
 from os.path import dirname, abspath
 
-from config import get_db_url
+from app.config import get_db_url
 
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
