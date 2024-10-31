@@ -1,0 +1,214 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FusionFind - Информация о боте</title>
+    <style>
+        :root {
+            --primary-color: #34D399;
+            --primary-dark: #059669;
+            --text-color: #1F2937;
+            --bg-light: #F0FDF4;
+            --border-color: #E5E7EB;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #f9fafb;
+            color: var(--text-color);
+        }
+
+        .header {
+            background-color: white;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .info-container {
+            max-width: 800px;
+            margin: 100px auto 40px;
+            padding: 20px;
+        }
+
+        .info-header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-header h1 {
+            margin: 0 0 10px 0;
+            color: var(--text-color);
+        }
+
+        .info-header p {
+            margin: 0;
+            color: #666;
+        }
+
+        .info-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-section h2 {
+            margin: 0 0 20px 0;
+            color: var(--text-color);
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            width: 200px;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .info-value {
+            flex: 1;
+            color: var(--text-color);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-badge.active {
+            background-color: var(--bg-light);
+            color: var(--primary-dark);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="container nav">
+        <a href="/" class="logo">FusionFind</a>
+        <nav class="nav-links">
+            <a href="/user/buy-tokens" class="nav-link">Купить токены</a>
+            <a href="/user/profile" class="nav-link">Профиль</a>
+        </nav>
+    </div>
+</header>
+
+<div class="info-container">
+    <div class="info-header">
+        <h1>Информация о боте</h1>
+    </div>
+
+    <div class="info-content">
+
+        <div class="info-section">
+            <h2>База данных</h2>
+            <div class="info-item">
+                <div class="info-label">Тип базы данных</div>
+                <div class="info-value">{{db.dialect}}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Хост</div>
+                <div class="info-value">{{db.host}}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Порт</div>
+                <div class="info-value">{{db.port}}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">База данных</div>
+                <div class="info-value">{{db.db_name}}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Таблица</div>
+                <div class="info-value">{{db.table_name}}</div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Колонки с метаданными</div>
+                <div class="info-value">{{db.metadata_columns}}</div>
+            </div>
+
+        </div>
+
+        <div class="info-section">
+            <h2>API интеграция</h2>
+            <div class="info-item">
+                <div class="info-label">API ключ</div>
+                <div class="info-value">{{db.token}}</div>
+            </div>
+        </div>
+
+        <a href="/my/bots" class="back-button">← Вернуться к списку ботов</a>
+    </div>
+</div>
+</body>
+</html>

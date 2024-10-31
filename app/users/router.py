@@ -142,3 +142,9 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     except:
         return {'message':'Ошибка'}
     return {'message':"OK"}
+
+@router.get('/bot_info/{id}')
+async def bot_info(id:int, request: Request, user_data: User = Depends(get_current_user)):
+    if user_data is None:
+        return RedirectResponse(url='/user/login')
+    return templates.TemplateResponse(name='bot_info.html', context={'request': request, 'db': await DatabasesDAO.find_one_or_none_by_id(id)})
