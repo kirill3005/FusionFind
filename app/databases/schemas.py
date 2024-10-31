@@ -14,7 +14,7 @@ class NewDB(BaseModel):
     db_name: str = Field(..., description='Название базы данных товаров')
     table_name: str = Field(...)
     vector_column: str = Field(...)
-    metadata_columns: List[str] = Field(...)
+    metadata_columns: str = Field(...)
     image_column: str = Field(...)
 
 

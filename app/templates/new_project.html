@@ -229,10 +229,8 @@
         </div>
 
         <div class="form-group">
-          <label>Колонки с метаданными</label>
-          <div class="metadata-fields" id="metadata-list">
-          </div>
-          <button type="button" class="add-metadata" id="add-metadata" name="metadata_columns">+ Добавить поле метаданной</button>
+          <label for="metadata-columns">Колонки с метаданными через пробел</label>
+          <input type="text" id="metadata-columns" name="metadata_columns" required>
         </div>
 
         <div class="actions">
@@ -243,26 +241,5 @@
     </div>
   </main>
 
-  <script>
-    const metadataList = document.getElementById('metadata-list');
-    const addMetadataButton = document.getElementById('add-metadata');
 
-    function addMetadataField(value = '') {
-      const tag = document.createElement('div');
-      tag.className = 'metadata-tag';
-      const fieldName = value || prompt('Введите название колонки с метаданными:');
-
-      if (fieldName) {
-        tag.innerHTML = `
-          ${fieldName}
-          <button type="button" onclick="this.parentElement.remove()">×</button>
-        `;
-        metadataList.appendChild(tag);
-      }
-    }
-
-    addMetadataButton.addEventListener('click', () => addMetadataField());
-
-
-  </script>
 </body></html>

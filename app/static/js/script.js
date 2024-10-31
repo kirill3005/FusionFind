@@ -164,11 +164,6 @@ async function newProject(event) {
     const form = document.getElementById('db-form');
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    const metadataList1 = document.getElementById('metadata-list');
-    const metadataFields = Array.from(metadataList1.children).map(tag =>
-        tag.textContent.trim().replace('×', '')
-      );
-    data.metadata_columns = JSON.stringify(metadataFields);
 
     try {
         const response = await fetch('/user/new_project', {

@@ -106,6 +106,7 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
     db_dict = db_info.dict()
     db_dict['user_token'] = user_data.token
     db_dict['token'] = ''
+    db_dict['metadata_columns'] = db_info.metadata_columns.split()
     await DatabasesDAO.add(**db_dict)
     db = (await DatabasesDAO.find_all(user_token=user_data.token))[-1]
     db_token = generate_single_part_token(db.id)
