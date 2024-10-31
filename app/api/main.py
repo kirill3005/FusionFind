@@ -14,25 +14,15 @@ from databases.dao import DatabasesDAO
 app = FastAPI()
 
 
-@app.get('/')
-async def index():
-    return {'message': 'Hello World'}
-
-
-@app.post('/{token}')
-async def main_api(token: str):
-    user = await UsersDAO.find_one_or_none(token=token)
-    return user
-
 
 @app.post('/new_conversation',tags=['Создать новый диалог'])
 async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = None):
     if api_token is None or db_token is None:
         return {'message':'Неверный токен пользователя или баз данных', 'conv_id':None}
-    user = UsersDAO.find_one_or_none(token=api_token)
+    user = await UsersDAO.find_one_or_none(token=api_token)
     if not user:
         return {'message':'Неверный токен пользователя', 'conv_id': None}
-    db = DatabasesDAO.find_one_or_none(user_token=api_token, token=db_token)
+    db = await DatabasesDAO.find_one_or_none(user_token=api_token, token=db_token)
     if not db:
         return {'message':'Неверный токен базы данных', 'conv_id': None}
     await ConversationsDAO.add(**{'user_token': api_token, 'project_token': db_token})
@@ -44,13 +34,13 @@ async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = No
 async def send_message(message: NewMessage, api_token: Optional[str] = None, db_token: Optional[str] = None, conversation_id: Optional[int]=None):
     if api_token is None or db_token is None:
         return {'message':'Неверный токен пользователя или баз данных', 'response': None}
-    user = UsersDAO.find_one_or_none(token=api_token)
+    user = await UsersDAO.find_one_or_none(token=api_token)
     if not user:
         return {'message':'Неверный токен пользователя', 'response': None}
-    db = DatabasesDAO.find_one_or_none(user_token=api_token, token=db_token)
+    db = await DatabasesDAO.find_one_or_none(user_token=api_token, token=db_token)
     if not db:
         return {'message':'Неверный токен базы данных', 'response': None}
-    conv = ConversationsDAO.find_one_or_none(user_token=api_token, project_token=db_token, id=conversation_id)
+    conv = await ConversationsDAO.find_one_or_none(user_token=api_token, project_token=db_token, id=conversation_id)
     if not conv:
         return {'message':'Неверный id диалога', 'response': None}
     user = await UsersDAO.find_one_or_none(token=api_token)
