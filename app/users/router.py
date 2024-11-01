@@ -19,7 +19,7 @@ from databases.dao import DatabasesDAO
 
 from users.auth import generate_single_part_token
 from db_migration.migrate import DataMigration
-
+import bleach
 router = APIRouter(prefix='/user')
 templates = Jinja2Templates(directory='templates')
 
@@ -32,6 +32,8 @@ async def register_user(user_data: SUserRegister, response: Response):
             status_code=status.HTTP_409_CONFLICT,
             detail='Пользователь с таким email уже существует')
     user_dict = user_data.dict()
+    for i in user_dict.keys():
+        user_dict[i] = bleach.clean(user_dict[i])
     user_dict['password'] = await get_password_hash(user_data.password)
     user_dict['tokens_count'] = 100
     user_dict['token'] = ''
@@ -104,6 +106,8 @@ async def new_project_get(request: Request, user_data: User = Depends(get_curren
 @router.post("/new_project", tags=['Создать новый проект'])
 async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)):
     db_dict = db_info.dict()
+    for i in db_dict.keys():
+        db_dict[i] = bleach.clean(db_dict[i])
     db_dict['user_token'] = user_data.token
     db_dict['token'] = ''
     db_dict['metadata_columns'] = db_info.metadata_columns.split()
