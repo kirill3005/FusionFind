@@ -78,7 +78,10 @@ services:
       - app/.env
     networks:
       - develop_project_network
-
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
 
 
 networks:

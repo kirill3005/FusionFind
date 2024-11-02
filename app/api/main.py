@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Response, Header, APIRouter
+from fastapi import FastAPI, Request, Response, Header, APIRouter, Depends
 
 from users.dao import UsersDAO
 
@@ -8,14 +8,15 @@ from messages.schemas import NewMessage
 
 from messages.models import Conversation
 from typing import Optional
-
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 from databases.dao import DatabasesDAO
 
 app = FastAPI()
 
 
 
-@app.post('/new_conversation',tags=['Создать новый диалог'])
+@app.post('/new_conversation',tags=['Создать новый диалог'], dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = None):
     if api_token is None or db_token is None:
         return {'message':'Неверный токен пользователя или баз данных', 'conv_id':None}
@@ -30,7 +31,7 @@ async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = No
     return {'message':'OK', 'conv_id':conv.id}
 
 
-@app.post('/message/',tags=['Передача сообщения от пользователя модели и получение ответа'])
+@app.post('/message/',tags=['Передача сообщения от пользователя модели и получение ответа'], dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def send_message(message: NewMessage, api_token: Optional[str] = None, db_token: Optional[str] = None, conversation_id: Optional[int]=None):
     if api_token is None or db_token is None:
         return {'message':'Неверный токен пользователя или баз данных', 'response': None}

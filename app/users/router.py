@@ -2,7 +2,8 @@ from jose import jwt
 from fastapi import APIRouter, HTTPException, status, Response, Depends, UploadFile, Request, File
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
-
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 
 from users.schemas import SUserRegister, STokens
 
@@ -24,7 +25,7 @@ router = APIRouter(prefix='/user')
 templates = Jinja2Templates(directory='templates')
 
 
-@router.post("/register", tags=['Регистрация нового пользователя (номер телефона вводить в правильном виде)'])
+@router.post("/register", tags=['Регистрация нового пользователя (номер телефона вводить в правильном виде)'], dependencies=[Depends(RateLimiter(times=2, seconds=1))])
 async def register_user(user_data: SUserRegister, response: Response):
     user = await UsersDAO.find_one_or_none(email=user_data.email)
     if user:
@@ -45,11 +46,11 @@ async def register_user(user_data: SUserRegister, response: Response):
     return {"user_id": user.id, 'message':"ok"}
 
 
-@router.get('/login')
+@router.get('/login', dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def get_students_html(request: Request):
     return templates.TemplateResponse(name='login.html', context={'request': request})
 
-@router.post("/login", tags=['Авторизация пользователя'])
+@router.post("/login", tags=['Авторизация пользователя'], dependencies=[Depends(RateLimiter(times=2, seconds=1))])
 async def auth_user(response: Response, user_data: SUserAuth):
     check = await authenticate_user(email=user_data.email, password=user_data.password)
     if check is None:
@@ -59,20 +60,20 @@ async def auth_user(response: Response, user_data: SUserAuth):
     response.set_cookie(key="users_access_token", value=access_token, httponly=True)
     return {'access_token': access_token, 'refresh_token': None, 'message':"ok"}
 
-@router.get("/profile")
+@router.get("/profile", dependencies=[Depends(RateLimiter(times=3, seconds=1))])
 async def get_me(request: Request, user_data: User = Depends(get_current_user)):
     if user_data is None:
         return RedirectResponse(url='/user/login')
     return templates.TemplateResponse(name='profile.html', context={'request': request, 'profile':user_data, "databases": await DatabasesDAO.find_all(user_token=user_data.token)})
 
 
-@router.get("/buy_tokens")
+@router.get("/buy_tokens", dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def buy_tokens_page(request: Request, user_data: User = Depends(get_current_user)):
     if user_data is None:
         return RedirectResponse(url='/user/login')
     return templates.TemplateResponse(name='buy_tokens.html', context={'request': request})
 
-@router.put('/buy_tokens', tags=['Купить токены'])
+@router.put('/buy_tokens', tags=['Купить токены'], dependencies=[Depends(RateLimiter(times=3, seconds=1))])
 async def buy_tokens(count: STokens, user_data: User = Depends(get_current_user)) -> dict:
     check = await UsersDAO.update(filter_by={'id': user_data.id},
                                    tokens_count=user_data.tokens_count+count.tokens)
@@ -97,13 +98,13 @@ async def get_projects(user_data: User = Depends(get_current_user)):
         return RedirectResponse(url='/user/login')
     return await DatabasesDAO.find_all(user_token=user_data.token)
 
-@router.get('/new_project')
+@router.get('/new_project', dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def new_project_get(request: Request, user_data: User = Depends(get_current_user)):
     if user_data is None:
         return RedirectResponse(url='/user/login')
     return templates.TemplateResponse(name='new_project.html', context={'request': request})
 
-@router.post("/new_project", tags=['Создать новый проект'])
+@router.post("/new_project", tags=['Создать новый проект'], dependencies=[Depends(RateLimiter(times=1, seconds=10))])
 async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)):
     db_dict = db_info.dict()
     for i in db_dict.keys():
@@ -147,7 +148,7 @@ async def db_connect(db_info: NewDB, user_data: User = Depends(get_current_user)
         return {'message':'Ошибка'}
     return {'message':"OK"}
 
-@router.get('/bot_info/{id}')
+@router.get('/bot_info/{id}', dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def bot_info(id:int, request: Request, user_data: User = Depends(get_current_user)):
     if user_data is None:
         return RedirectResponse(url='/user/login')
