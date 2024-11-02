@@ -12,6 +12,7 @@ import uvicorn
 
 app = FastAPI()
 
+
 app.mount('/static', StaticFiles(directory='static'), 'static')
 templates = Jinja2Templates(directory='templates')
 

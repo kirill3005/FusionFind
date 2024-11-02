@@ -15,7 +15,6 @@ from databases.dao import DatabasesDAO
 app = FastAPI()
 
 
-
 @app.post('/new_conversation',tags=['Создать новый диалог'], dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = None):
     if api_token is None or db_token is None:

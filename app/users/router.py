@@ -24,7 +24,6 @@ import bleach
 router = APIRouter(prefix='/user')
 templates = Jinja2Templates(directory='templates')
 
-
 @router.post("/register", tags=['Регистрация нового пользователя (номер телефона вводить в правильном виде)'], dependencies=[Depends(RateLimiter(times=2, seconds=1))])
 async def register_user(user_data: SUserRegister, response: Response):
     user = await UsersDAO.find_one_or_none(email=user_data.email)
