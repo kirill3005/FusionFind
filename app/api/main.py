@@ -11,10 +11,14 @@ from typing import Optional
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from databases.dao import DatabasesDAO
+import aioredis
 
 app = FastAPI()
 
-
+@app.on_event("startup")
+async def startup():
+    redis = await aioredis.from_url("redis://redis:6379")
+    await FastAPILimiter.init(redis)
 @app.post('/new_conversation',tags=['Создать новый диалог'], dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = None):
     if api_token is None or db_token is None:
