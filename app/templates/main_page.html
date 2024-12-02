@@ -1,4 +1,4 @@
-<html><head>
+<html><head><base href="https://www.fusionfind.com/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FusionFind - Современный поиск по товарам</title>
@@ -10,7 +10,7 @@
       --bg-light: #F0FDF4;
       --border-color: #E5E7EB;
     }
-
+    
     body, html {
       margin: 0;
       padding: 0;
@@ -146,137 +146,104 @@
       color: white;
     }
 
-    .testimonials {
-      padding: 100px 0;
-      background-color: var(--bg-light);
+    .chat-container {
+      max-width: 800px;
+      margin: 40px auto;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 60px;
     }
 
-    .testimonials h2 {
+    .chat-title {
       text-align: center;
-      font-size: 2.5em;
-      margin-bottom: 60px;
+      margin-bottom: 20px;
       color: var(--text-color);
     }
 
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 40px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .testimonial-card {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .testimonial-content {
-      font-size: 1.1em;
+    .chat-description {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      color: #666;
       line-height: 1.6;
-      color: #4B5563;
-      margin-bottom: 20px;
     }
 
-    .testimonial-author {
+    .chat-messages {
+      height: 400px;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+
+    .chat-input-container {
       display: flex;
       align-items: center;
-      gap: 15px;
+      padding: 15px;
+      background-color: white;
+      border-top: 1px solid var(--border-color);
     }
 
-    .author-avatar {
-      width: 50px;
-      height: 50px;
+    .chat-input {
+      flex-grow: 1;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-right: 10px;
+      font-size: 14px;
+    }
+
+    .chat-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-button {
+      background: none;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
       border-radius: 50%;
-      background-color: var(--primary-color);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: bold;
+      transition: background-color 0.3s ease;
     }
 
-    .author-info {
-      line-height: 1.4;
+    .icon-button:hover {
+      background-color: #f3f4f6;
     }
 
-    .author-name {
-      font-weight: bold;
-      color: var(--text-color);
+    .icon-button svg {
+      width: 24px;
+      height: 24px;
+      fill: #666;
     }
 
-    .author-company {
-      color: #6B7280;
-      font-size: 0.9em;
-    }
-
-    .showcase {
-      padding: 100px 0;
-      background-color: var(--bg-light);
-    }
-
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 40px;
-      align-items: center;
-    }
-
-    .showcase-image {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .showcase-content {
-      padding: 20px;
-    }
-
-    .showcase-content h2 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      color: var(--text-color);
-    }
-
-    .showcase-content p {
-      font-size: 1.2em;
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 30px;
+    .send-button svg {
+      fill: var(--primary-color);
     }
 
     @media (max-width: 768px) {
       .features-grid {
         grid-template-columns: 1fr;
       }
-
+      
       .hero h1 {
         font-size: 2.8em;
-      }
-
-      .testimonials-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .showcase-grid {
-        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-
 <body>
   <header class="header">
     <div class="container nav">
       <a href="/" class="logo">FusionFind</a>
       <nav class="nav-links">
-        <a href="/user/login" class="nav-link">Профиль</a>
-        <a href="/user/login" class="nav-link">Купить токены</a>
-        <a href="/user/login" class="button">Создать бота</a>
-        <a href="/user/login" class="auth-button">Вход / Регистрация</a>
+        <a href="/my" class="nav-link">Мои боты</a>
+        <a href="/buy-tokens" class="nav-link">Купить токены</a>
+        <a href="/my/bots/new" class="button">Создать бота</a>
+        <a href="/login" class="auth-button">Войти / Регистрация</a>
       </nav>
     </div>
   </header>
@@ -286,7 +253,7 @@
       <div class="container">
         <h1>Улучшенный поиск <br>для вашего магазина</h1>
         <p>FusionFind использует передовые алгоритмы для точного поиска товаров по вашей базе данных. Создайте поискового бота для вашего магазина всего за пару минут.</p>
-        <a href="/user/new_project" class="button">Создать бота</a>
+        <a href="/my/bots/new" class="button">Создать бота</a>
       </div>
     </section>
 
@@ -315,5 +282,87 @@
         </div>
       </div>
     </section>
+
+    <section class="container">
+      <h2 class="chat-title">Попробуйте демо-версию поискового бота</h2>
+      <p class="chat-description">Этот тестовый чат демонстрирует работу поискового бота. Вы можете отправлять текстовые сообщения и изображения, чтобы увидеть, как работает наша система поиска товаров. Попробуйте описать товар своими словами или загрузить его фотографию.</p>
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will be added here dynamically -->
+        </div>
+        <div class="chat-input-container">
+          <input type="text" class="chat-input" placeholder="Введите сообщение..." id="messageInput">
+          <div class="chat-controls">
+            <input type="file" id="photoInput" accept="image/*" style="display: none">
+            <button class="icon-button" onclick="document.getElementById('photoInput').click()">
+              <svg viewBox="0 0 24 24">
+                <path d="M13.5 9c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM19 18H5v-7h2.38l1.73-2h6.89l1.73 2H19v7zM21 6h-3.6l-1.73-2H8.33L6.6 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+              </svg>
+            </button>
+            <button class="icon-button send-button" onclick="sendMessage()">
+              <svg viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      if (message) {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageElement = document.createElement('div');
+        messageElement.style.padding = '10px';
+        messageElement.style.margin = '10px';
+        messageElement.style.backgroundColor = 'white';
+        messageElement.style.borderRadius = '8px';
+        messageElement.textContent = message;
+        chatMessages.appendChild(messageElement);
+        
+        // Clear input after sending
+        input.value = '';
+        
+        // Auto scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    }
+
+    // Handle enter key
+    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    // Handle photo upload
+    document.getElementById('photoInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const chatMessages = document.getElementById('chatMessages');
+          const imageElement = document.createElement('div');
+          imageElement.style.padding = '10px';
+          imageElement.style.margin = '10px';
+          imageElement.style.backgroundColor = 'white';
+          imageElement.style.borderRadius = '8px';
+          
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '200px';
+          img.style.borderRadius = '4px';
+          
+          imageElement.appendChild(img);
+          chatMessages.appendChild(imageElement);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
 </body></html>
