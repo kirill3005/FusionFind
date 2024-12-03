@@ -12,6 +12,10 @@ from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 from databases.dao import DatabasesDAO
 import aioredis
+import google.generativeai as genai
+import httpx
+import os
+import base64
 
 app = FastAPI()
 
@@ -61,4 +65,12 @@ async def send_message(message: NewMessage, api_token: Optional[str] = None, db_
     response_dict = {'message': 'response', 'user_token': api_token, 'photo': '', 'sender': 'model',
                      'conversation_id': conversation_id, 'project_token': db_token}
     await MessagesDAO.add(**response_dict)
-    return {'message':'OK', 'response':'Ответ от модели'}
+    genai.configure(api_key="AIzaSyBgYrYhKnBACYFeVU1IfBu1-MIrpMM4whI")
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    if message.photo is not None:
+        image = httpx.get(message.photo)
+        response = model.generate_content(
+            [{'mime_type': 'image/jpeg', 'data': base64.b64encode(image.content).decode('utf-8')}, message.message])
+    else:
+        response = model.generate_content(message.message)
+    return {'message':'OK', 'response':response.text}
