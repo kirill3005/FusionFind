@@ -22,7 +22,10 @@ async def startup():
     redis = await aioredis.from_url("redis://redis:6379")
     await FastAPILimiter.init(redis)
 
-
+@app.head('/')
+async def head_handler():
+    # Возвращаем только метаданные без тела ответа
+    return JSONResponse(headers={"Content-Type": "text/html"}, status_code=200)
 
 @app.get('/', dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def index(request: Request):

@@ -400,13 +400,16 @@
     }
 
     async function getBotResponse(message, image) {
-        const response = await fetch('http://api:8001/message?apitoken=kirill&db_token=kirill&conversation_id={{conv_id}}', {
+        const response = await fetch('http://api:8001/message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-          body: {'message':message,
-          'photo': image}
+          body: JSON.stringify({api_token: ,
+            db_token: ,
+            conversation_id: ,
+            message:message,
+          photo: image})
         });
         return response['response'];
     }
