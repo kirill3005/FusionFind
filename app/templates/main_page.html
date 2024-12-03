@@ -360,15 +360,15 @@
   </main>
 
   <script>
-    function sendMessage(image = null) {
+    async function sendMessage(image = null) {
       const input = document.getElementById('messageInput');
       const message = input.value.trim();
       const chatMessages = document.getElementById('chatMessages');
-      
+
       if (message || image) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', 'user-message');
-        
+
         if (image) {
           const img = document.createElement('img');
           img.src = image;
@@ -377,24 +377,22 @@
           img.style.marginBottom = '8px';
           messageElement.appendChild(img);
         }
-        
+
         if (message) {
           const textElement = document.createElement('div');
           textElement.textContent = message;
           messageElement.appendChild(textElement);
           input.value = '';
         }
-        
+
         chatMessages.appendChild(messageElement);
-        
-        setTimeout(() => {
-          const botMessage = document.createElement('div');
-          botMessage.classList.add('message', 'bot-message');
-          botMessage.textContent = getBotResponse(message, image);
-          chatMessages.appendChild(botMessage);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 1000);
-        
+
+        const botMessage = document.createElement('div');
+        botMessage.classList.add('message', 'bot-message');
+        botMessage.textContent = await getBotResponse(message, image);
+        chatMessages.appendChild(botMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     }
@@ -405,13 +403,14 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-          body: JSON.stringify({api_token: ,
-            db_token: ,
-            conversation_id: ,
-            message:message,
+          body: JSON.stringify({api_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1ODIxNTIyfQ.ms-T2CU0_9BIYBRfApNoHFgMzKBhhtKlWftKyacBH_',
+            db_token: 'MS1lNVZLRDgxcERPeFdPR3lBZFNEak9nPT0',
+            conversation_id: '4',
+            message: message,
           photo: image})
         });
-        return response['response'];
+        const result = await response.json();
+        return result.response;;
     }
 
     window.onload = function() {

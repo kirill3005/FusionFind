@@ -39,31 +39,31 @@ async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = No
 
 
 @app.post('/message/',tags=['Передача сообщения от пользователя модели и получение ответа'], dependencies=[Depends(RateLimiter(times=5, seconds=1))])
-async def send_message(message: NewMessage, api_token: Optional[str] = None, db_token: Optional[str] = None, conversation_id: Optional[int]=None):
-    if api_token is None or db_token is None:
+async def send_message(message: NewMessage):
+    if message.api_token is None or message.db_token is None:
         return {'message':'Неверный токен пользователя или баз данных', 'response': None}
-    user = await UsersDAO.find_one_or_none(token=api_token)
+    user = await UsersDAO.find_one_or_none(token=message.api_token)
     if not user:
         return {'message':'Неверный токен пользователя', 'response': None}
-    db = await DatabasesDAO.find_one_or_none(user_token=api_token, token=db_token)
+    db = await DatabasesDAO.find_one_or_none(user_token=message.api_token, token=message.db_token)
     if not db:
         return {'message':'Неверный токен базы данных', 'response': None}
-    conv = await ConversationsDAO.find_one_or_none(user_token=api_token, project_token=db_token, id=conversation_id)
+    conv = await ConversationsDAO.find_one_or_none(user_token=message.api_token, project_token=message.db_token, id=message.conversation_id)
     if not conv:
         return {'message':'Неверный id диалога', 'response': None}
-    user = await UsersDAO.find_one_or_none(token=api_token)
+    user = await UsersDAO.find_one_or_none(token=message.api_token)
     if user.tokens_count <= 0:
         return {'message': 'У вас закончились токены', 'response': None}
-    await UsersDAO.update(filter_by={'token': api_token},tokens_count=user.tokens_count - 1)
+    await UsersDAO.update(filter_by={'token': message.api_token},tokens_count=user.tokens_count - 1)
     msg_dict = message.dict()
-    msg_dict['user_token'] = api_token
+    msg_dict['user_token'] = message.api_token
     msg_dict['sender'] = 'user'
-    msg_dict['conversation_id'] = conversation_id
-    msg_dict['project_token'] = db_token
+    msg_dict['conversation_id'] = message.conversation_id
+    msg_dict['project_token'] = message.db_token
     await MessagesDAO.add(**msg_dict)
     '''response = model(message.message, message.photo)'''
-    response_dict = {'message': 'response', 'user_token': api_token, 'photo': '', 'sender': 'model',
-                     'conversation_id': conversation_id, 'project_token': db_token}
+    response_dict = {'message': 'response', 'user_token': message.api_token, 'photo': '', 'sender': 'model',
+                     'conversation_id': message.conversation_id, 'project_token': message.db_token}
     await MessagesDAO.add(**response_dict)
     genai.configure(api_key="AIzaSyBgYrYhKnBACYFeVU1IfBu1-MIrpMM4whI")
     model = genai.GenerativeModel("gemini-1.5-flash")
