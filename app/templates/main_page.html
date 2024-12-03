@@ -400,7 +400,7 @@
     }
 
     async function getBotResponse(message, image) {
-        const response = await fetch('http://api.fusionfind.ru/message?apitoken=kirill&db_token=kirill&conversation_id={{conv_id}}', {
+        const response = await fetch('http://api:8001/message?apitoken=kirill&db_token=kirill&conversation_id={{conv_id}}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
