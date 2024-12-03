@@ -65,12 +65,4 @@ async def send_message(message: NewMessage):
     response_dict = {'message': 'response', 'user_token': message.api_token, 'photo': '', 'sender': 'model',
                      'conversation_id': message.conversation_id, 'project_token': message.db_token}
     await MessagesDAO.add(**response_dict)
-    genai.configure(api_key="AIzaSyBgYrYhKnBACYFeVU1IfBu1-MIrpMM4whI")
-    model = genai.GenerativeModel("gemini-1.5-flash")
-    if message.photo is not None:
-        image = httpx.get(message.photo)
-        response = model.generate_content(
-            [{'mime_type': 'image/jpeg', 'data': base64.b64encode(image.content).decode('utf-8')}, message.message])
-    else:
-        response = model.generate_content(message.message)
-    return {'message':'OK', 'response':response.text}
+    return {'message':'OK', 'response':'Алё'}
