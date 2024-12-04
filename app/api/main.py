@@ -86,7 +86,11 @@ async def send_message(message: NewMessage):
     await MessagesDAO.add(**response_dict)
     genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
     model = genai.GenerativeModel("gemini-1.5-flash")
-    chat = model.start_chat(history=list(await MessagesDAO.find_all(filter_by={'conversation_id': message.conversation_id})))
+    messages = await MessagesDAO.find_all(conversation_id = message.conversation_id)
+    history = []
+    for message in messages:
+        history.append({'role':message.sender, 'parts':message.message})
+    chat = model.start_chat(history=history)
     if message.photo == 'None':
         response = chat.send_message(message.message)
     else:
