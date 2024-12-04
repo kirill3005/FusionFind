@@ -398,17 +398,20 @@
     }
 
     async function getBotResponse(message, image) {
-        const response = await fetch('http://api:8001/message/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-          body: JSON.stringify({'api_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1ODIxNTIyfQ.ms-T2CU0_9BIYBRfApNoHFgMzKBhhtKlWftKyacBH_8',
-            'db_token': 'MS1lNVZLRDgxcERPeFdPR3lBZFNEak9nPT0',
-            'conversation_id': 1,
-            'message': message,
-          'photo': image})
-        });
+        const response = await fetch('http://api.fusionfind.ru/message/', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+        api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1ODkyNTc3fQ.LAK1H66NmO75W4vPLvdJyrL0lDDbsRUiANzGpi6gTK4",
+        db_token: "MS1OWUJHenZKSVVhR0NIYmpneks4Y1BnPT0",
+        conversation_id: 1,
+        message: "message",
+        photo: "string",
+    }),
+});
         const result = await response.json();
         return result.response;
     }
