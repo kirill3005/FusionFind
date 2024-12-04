@@ -86,5 +86,10 @@ async def send_message(message: NewMessage):
     await MessagesDAO.add(**response_dict)
     genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
     model = genai.GenerativeModel("gemini-1.5-flash")
-    response = model.generate_content(message.message)
+    if message.photo == 'None':
+        response = model.generate_content(message.message)
+    else:
+        image = httpx.get(message.photo)
+        response = model.generate_content(
+            [{'mime_type': 'image/jpeg', 'data': base64.b64encode(image.content).decode('utf-8')}, message.message])
     return {'message':'OK', 'response':response.text}
