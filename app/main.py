@@ -1,8 +1,9 @@
 import aioredis
 from fastapi import FastAPI, Request, Depends, Response
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, JSONResponse
 from starlette.templating import Jinja2Templates
 
+from app.messages.dao import ScoresDAO
 from users.router import router as router_users, templates
 from fastapi.staticfiles import StaticFiles
 from fastapi_limiter import FastAPILimiter
@@ -10,6 +11,9 @@ from fastapi_limiter.depends import RateLimiter
 import aioredis
 import requests
 import uvicorn
+from messages.schemas import Score
+from users.models import User
+from users.dependencies import get_current_user
 
 app = FastAPI()
 
@@ -33,6 +37,15 @@ async def index(request: Request):
 
     conv_id = conv_id.json()['conv_id']
     return templates.TemplateResponse('main_page.html', context={'request': request, 'conv_id':int(conv_id)})
+
+@app.get('/scores')
+async def scores(score: Score, password:str):
+    if password == 'Алё':
+        await ScoresDAO.add(**(score.dict()))
+
+@app.get('/dialog')
+async def dialog(request: Request, user_data: User = Depends(get_current_user)):
+    return templates.TemplateResponse('dialog.html', context={'request': request, 'username':user_data.email})
 
 app.include_router(router_users)
 

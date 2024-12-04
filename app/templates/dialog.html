@@ -345,42 +345,55 @@
         <a href="/my" class="nav-link">Мои боты</a>
         <a href="/buy-tokens" class="nav-link">Купить токены</a>
         <a href="/my/bots/new" class="button">Создать бота</a>
-        <a href="/login" class="auth-button">Войти / Регистрация</a>
       </nav>
     </div>
   </header>
-
   <main>
-    <section class="hero">
-      <div class="container">
-        <h1>Улучшенный поиск <br>для вашего магазина</h1>
-        <p>FusionFind использует передовые алгоритмы для точного поиска товаров по вашей базе данных. Создайте поискового бота для вашего магазина всего за пару минут.</p>
-        <a href="/my/bots/new" class="button">Создать бота</a>
+    <section class="container">
+      <p> ф</p>
+      <p>ф</p>
+      <h2 class="chat-title">Попробуйте демо-версию поискового бота</h2>
+      <p class="chat-description">Этот тестовый чат демонстрирует работу поискового бота. Вы можете отправлять текстовые сообщения и изображения, чтобы увидеть, как работает наша система поиска товаров. Попробуйте описать товар своими словами или загрузить его фотографию.</p>
+      <div class="feedback-info">
+        <strong>Оцени качество ответов шоппинг ассистента по 3 бинарным метрикам:</strong>
+        <br>
+        0 - критерий не выполнен, 1 - критерий выполнен
+        <br><br>
+        Критерии оценки:
+        <br>
+        1. Адекватность: ассистент ответил на вопрос (пускай даже неправильно), текст понятен и не содержит большого количества ошибок
+        <br>
+        2. Осознавание ошибок: ответ содержит ошибки, но ассистент их осознаёт и обозначает это
+        <br>
+        3. Полезность: рекомендованы правильные товары, допускаются небольшие ошибки или неточности
       </div>
-    </section>
-
-    <section class="features container">
-      <div class="features-grid">
-        <div class="feature-card">
-          <svg class="feature-icon" viewBox="0 0 24 24">
-            <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 18.5L4 16v-2l8 4 8-4v2l-8 4.5zm0-5l-8-4V8l8 4 8-4v3.5l-8 4z"/>
-          </svg>
-          <h3>Точный поиск</h3>
-          <p>Находит релевантные товары даже при опечатках и неточных запросах</p>
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will be added here dynamically -->
         </div>
-        <div class="feature-card">
-          <svg class="feature-icon" viewBox="0 0 24 24">
-            <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-          </svg>
-          <h3>Быстрая интеграция</h3>
-          <p>Простое подключение к вашей существующей базе данных товаров</p>
-        </div>
-        <div class="feature-card">
-          <svg class="feature-icon" viewBox="0 0 24 24">
-            <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
-          </svg>
-          <h3>Умные подсказки</h3>
-          <p>Интеллектуальные рекомендации на основе поисковых запросов</p>
+        <div class="chat-input-container">
+          <div id="imagePreview" style="display: none;">
+            <img id="currentImage" style="display: none;">
+            <button class="icon-button" onclick="removeImage()">
+              <svg viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          </div>
+          <input type="text" class="chat-input" placeholder="Введите сообщение..." id="messageInput">
+          <div class="chat-controls">
+            <input type="file" id="photoInput" accept="image/*" style="display: none">
+            <button class="icon-button" onclick="document.getElementById('photoInput').click()">
+              <svg viewBox="0 0 24 24">
+                <path d="M13.5 9c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM19 18H5v-7h2.38l1.73-2h6.89l1.73 2H19v7zM21 6h-3.6l-1.73-2H8.33L6.6 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+              </svg>
+            </button>
+            <button class="icon-button send-button" onclick="sendMessageWithImage()">
+              <svg viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>

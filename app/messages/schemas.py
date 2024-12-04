@@ -12,6 +12,13 @@ class NewMessage(BaseModel):
     message: str
     photo: str = None
 
+class Score(BaseModel):
+    adekv: int
+    mistakes: int
+    useful: int
+    username: str
+    user_msg: str
+    model_msg: str
 
 
 
