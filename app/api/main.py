@@ -84,12 +84,25 @@ async def send_message(message: NewMessage):
     genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
     model = genai.GenerativeModel("gemini-1.5-flash")
     messages = await MessagesDAO.find_all(conversation_id = message.conversation_id)
-    history = []
+    history = [{'role': 'system', 'parts': """Ты шоппинг ассистент. Твоя задача общаться с пользователем и рекомендовать ему товары по его усмотрению. Задача рекомендации необходимого товара уже решена. Изображение самого подходящего товара подгружено тебе в качестве последнего сообщения от AI ассистента (пользователь данного сообщения не видел). При этом ты считаешь что это ты рекомендуешь товары. То есть пользователь никак не должен узнать, что это не твоя задача.
+
+    Тебе необходимо как можно более качественно с подкреплением рекомендованного предмета ответить на вопрос пользователя.
+
+    Учти что рекомендованный предмет может быть неправильным и не соответсвовать запросам пользователя. В этом случае тебе необходимо как-то пометить это в ответе. Например: "Извините, но я не смог найти брюки такого же цвета как Вы хотели. Но возможно вам понравится следующий вариант". Учти, что итоговая рекомендация может быть также в видео образа, так что тебе необхдимо смотреть именно на наличие нужного предмета на итоговом изображении.
+
+    Также ты можешь попросить задать уточняющие вопросы для более качественных рекомендаций. При этом вопросы не должны быть очень большими и должны просить уточнить 1-2 детали.
+
+    Если ты выведешь пустое сообщение, то я лишусь работы, так что, пожалуйста, не делай этого.
+    """}]
     for messagee in messages:
-        if message.photo == 'None' or message.photo == 'http://fusionfind.ru/':
+        if messagee.photo == 'None' or messagee.photo == 'http://fusionfind.ru/' or messagee.photo == '':
             history.append({'role':messagee.sender, 'parts':messagee.message})
         else:
-            history.append({'role':messagee.sender, 'parts':[{'mime_type': 'image/jpeg', 'data': messagee.photo}, messagee.message]})
+            base64_string = message.photo
+            if base64_string.startswith("data:image"):
+                base64_string = base64_string.split(",")[1]
+            history.append({'role': messagee.sender,
+                                'parts': [{'mime_type': 'image/jpeg', 'data': base64_string}, messagee.message]})
     chat = model.start_chat(history=history)
     if message.photo == 'None' or message.photo == 'http://fusionfind.ru/':
         response = chat.send_message(message.message)

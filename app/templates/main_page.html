@@ -369,7 +369,7 @@
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', 'user-message');
 
-        if (image) {
+        if (image && image != 'http://fusionfind.ru/') {
           const img = document.createElement('img');
           img.src = image;
           img.style.maxWidth = '200px';
