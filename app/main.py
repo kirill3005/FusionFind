@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, Depends, Response
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.templating import Jinja2Templates
 
-from app.messages.dao import ScoresDAO
+from messages.dao import ScoresDAO
 from users.router import router as router_users, templates
 from fastapi.staticfiles import StaticFiles
 from fastapi_limiter import FastAPILimiter
@@ -36,16 +36,15 @@ async def index(request: Request):
     conv_id = requests.post('http://api:8001/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis&db_token=MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0')
 
     conv_id = conv_id.json()['conv_id']
-    return templates.TemplateResponse('main_page.html', context={'request': request, 'conv_id':int(conv_id)})
+    return templates.TemplateResponse('main_page.html', context={'request': request})
 
 @app.get('/scores')
-async def scores(score: Score, password:str):
-    if password == 'Алё':
-        await ScoresDAO.add(**(score.dict()))
+async def scores(score: Score):
+    await ScoresDAO.add(**(score.dict()))
 
 @app.get('/dialog')
-async def dialog(request: Request, user_data: User = Depends(get_current_user)):
-    return templates.TemplateResponse('dialog.html', context={'request': request, 'username':user_data.email})
+async def dialog(conv_id:int, request: Request, user_data: User = Depends(get_current_user)):
+    return templates.TemplateResponse('dialog.html', context={'request': request, 'username':user_data.email, 'conv_id': conv_id})
 
 app.include_router(router_users)
 

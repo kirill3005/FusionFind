@@ -59,7 +59,7 @@ function displayErrors(errorData) {
     alert(message);
 }
 
-async function loginFunction(event) {
+async function loginFunction(event, conv_id) {
     event.preventDefault();  // Предотвращаем стандартное действие формы
 
     // Получаем форму и собираем данные из неё
@@ -87,7 +87,7 @@ async function loginFunction(event) {
         const result = await response.json();
 
         if (result.message) {  // Проверяем наличие сообщения о успешной регистрации
-            window.location.href = '/dialog';  // Перенаправляем пользователя на страницу логина
+            window.location.href = '/dialog?conv_id=${conv_id}';  // Перенаправляем пользователя на страницу логина
         } else {
             alert(result.message || 'Неизвестная ошибка');
         }
