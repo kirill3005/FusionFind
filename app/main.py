@@ -38,7 +38,7 @@ async def index(request: Request):
     conv_id = conv_id.json()['conv_id']
     return templates.TemplateResponse('main_page.html', context={'request': request})
 
-@app.get('/scores')
+@app.post('/scores')
 async def scores(score: Score):
     await ScoresDAO.add(**(score.dict()))
 
