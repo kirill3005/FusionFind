@@ -1,6 +1,6 @@
 import aioredis
 from fastapi import FastAPI, Request, Depends, Response
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, JSONResponse
 from starlette.templating import Jinja2Templates
 
 from users.router import router as router_users, templates
