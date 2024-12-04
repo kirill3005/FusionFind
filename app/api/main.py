@@ -67,7 +67,7 @@ async def send_message(message: NewMessage):
     response_dict = {'message': 'response', 'user_token': message.api_token, 'photo': '', 'sender': 'model',
                      'conversation_id': message.conversation_id, 'project_token': message.db_token}
     await MessagesDAO.add(**response_dict)
-    genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
+    genai.configure(api_key="")
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(message.message)
     return {'message':'OK', 'response':response}
