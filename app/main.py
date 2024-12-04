@@ -42,8 +42,9 @@ async def index(request: Request):
 async def scores(score: Score):
     await ScoresDAO.add(**(score.dict()))
 
-@app.get('/dialog')
+@app.get('/dialog/{conv_id}')
 async def dialog(conv_id:int, request: Request, user_data: User = Depends(get_current_user)):
+    print(conv_id)
     return templates.TemplateResponse('dialog.html', context={'request': request, 'username':user_data.email, 'conv_id': conv_id})
 
 app.include_router(router_users)

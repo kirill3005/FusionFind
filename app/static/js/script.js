@@ -87,7 +87,7 @@ async function loginFunction(event, conv_id) {
         const result = await response.json();
 
         if (result.message) {  // Проверяем наличие сообщения о успешной регистрации
-            window.location.href = '/dialog?conv_id=${conv_id}';  // Перенаправляем пользователя на страницу логина
+            window.location.href = '/dialog/${conv_id}';  // Перенаправляем пользователя на страницу логина
         } else {
             alert(result.message || 'Неизвестная ошибка');
         }
