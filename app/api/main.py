@@ -81,15 +81,12 @@ async def send_message(message: NewMessage):
     msg_dict['message'] = message.message
     await MessagesDAO.add(**msg_dict)
     '''response = model(message.message, message.photo)'''
-    response_dict = {'message': 'response', 'user_token': message.api_token, 'photo': '', 'sender': 'model',
-                     'conversation_id': message.conversation_id, 'project_token': message.db_token}
-    await MessagesDAO.add(**response_dict)
     genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
     model = genai.GenerativeModel("gemini-1.5-flash")
     messages = await MessagesDAO.find_all(conversation_id = message.conversation_id)
     history = []
-    for message in messages:
-        history.append({'role':message.sender, 'parts':message.message})
+    for messagee in messages:
+        history.append({'role':messagee.sender, 'parts':messagee.message})
     chat = model.start_chat(history=history)
     if message.photo == 'None':
         response = chat.send_message(message.message)
@@ -99,4 +96,7 @@ async def send_message(message: NewMessage):
             base64_string = base64_string.split(",")[1]
         response = chat.send_message(
             [{'mime_type': 'image/jpeg', 'data': base64_string}, message.message])
+    response_dict = {'message': response.text, 'user_token': message.api_token, 'photo': '', 'sender': 'model',
+                     'conversation_id': message.conversation_id, 'project_token': message.db_token}
+    await MessagesDAO.add(**response_dict)
     return {'message':'OK', 'response':response.text}
