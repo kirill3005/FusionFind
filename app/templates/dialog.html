@@ -498,7 +498,7 @@
       }
     }
     async function getBotResponse(message, image) {
-        const conversationId = {{ conv_id }};
+        const conversationId = '{{ conv_id }}';
         if (image) {
         const response = await fetch('http://api.fusionfind.ru/message/', {
         method: 'POST',

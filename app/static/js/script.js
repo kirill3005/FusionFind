@@ -87,7 +87,7 @@ async function loginFunction(event) {
         const result = await response.json();
 
         if (result.message) {  // Проверяем наличие сообщения о успешной регистрации
-            window.location.href = '/user/profile';  // Перенаправляем пользователя на страницу логина
+            window.location.href = '/dialog';  // Перенаправляем пользователя на страницу логина
         } else {
             alert(result.message || 'Неизвестная ошибка');
         }
