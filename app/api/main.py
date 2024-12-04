@@ -86,10 +86,13 @@ async def send_message(message: NewMessage):
     await MessagesDAO.add(**response_dict)
     genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
     model = genai.GenerativeModel("gemini-1.5-flash")
+    chat = model.start_chat(history=list(await MessagesDAO.find_all(filter_by={'conversation_id': message.conversation_id})))
     if message.photo == 'None':
-        response = model.generate_content(message.message)
+        response = chat.send_message(message.message)
     else:
-        image = httpx.get(message.photo)
-        response = model.generate_content(
-            [{'mime_type': 'image/jpeg', 'data': base64.b64encode(image.content).decode('utf-8')}, message.message])
+        base64_string = message.photo
+        if base64_string.startswith("data:image"):
+            base64_string = base64_string.split(",")[1]
+        response = chat.send_message(
+            [{'mime_type': 'image/jpeg', 'data': base64_string}, message.message])
     return {'message':'OK', 'response':response.text}
