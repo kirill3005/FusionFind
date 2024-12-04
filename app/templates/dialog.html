@@ -352,7 +352,7 @@
     <section class="container">
       <p> ф</p>
       <p>ф</p>
-      <p>ф</p>
+      <p style="color: white;">ф</p>
       <h2 class="chat-title">Попробуйте демо-версию поискового бота</h2>
       <p class="chat-description">Этот тестовый чат демонстрирует работу поискового бота. Вы можете отправлять текстовые сообщения и изображения, чтобы увидеть, как работает наша система поиска товаров. Попробуйте описать товар своими словами или загрузить его фотографию.</p>
       <div class="feedback-info">
@@ -449,7 +449,7 @@
         const yesButton = document.createElement('button');
         yesButton.classList.add('button');
         yesButton.textContent = 'Да';
-        yesButton.onclick = () => showCriteria(feedbackContainer);
+        yesButton.onclick = () => showCriteria(feedbackContainer, message, responseText.textContent);
 
         const noButton = document.createElement('button');
         noButton.classList.add('auth-button');
@@ -579,7 +579,7 @@
         removeImage();
       }
     }
-    function showCriteria(container) {
+    function showCriteria(container, user, bot) {
       const criteriaSection = container.querySelector('.feedback-criteria');
       criteriaSection.classList.add('active');
 
@@ -597,18 +597,28 @@
       const submitButton = document.createElement('button');
       submitButton.classList.add('auth-button'); // Changed from 'button' to 'auth-button'
       submitButton.textContent = 'Отправить оценку';
-      submitButton.onclick = () => submitFeedback(container);
+      submitButton.onclick = () => submitFeedback(container, user, bot);
 
       submitContainer.appendChild(submitButton);
       criteriaSection.appendChild(submitContainer);
     }
 
-    function submitFeedback(container) {
+    async function submitFeedback(container, user, bot) {
       const checkboxes = container.querySelectorAll('input[type="checkbox"]');
       const feedback = Array.from(checkboxes).map(checkbox => checkbox.checked ? 1 : 0);
 
-      // Here you can handle the feedback data as needed
-      console.log('Feedback submitted:', feedback);
+      const response = await fetch('/scores', {
+        method: 'POST',
+        headers: {
+                        'Content-Type': 'application/json'
+                    },
+                body: JSON.stringify({adekv: feedback[0],
+                mistakes: feedback[1],
+                useful: feedback[2],
+                username: '{{username}}',
+                user_msg: user,
+                model_msg: bot})
+      })
 
       // Hide the feedback container
       hideFeedback(container);
