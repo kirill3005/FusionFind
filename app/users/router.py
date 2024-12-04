@@ -62,7 +62,7 @@ async def auth_user(response: Response, user_data: SUserAuth):
         'http://api:8001/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis&db_token=MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0')
     conv_id = conv_id.json()['conv_id']
     print(conv_id)
-    return {'access_token': access_token, 'refresh_token': None, 'message':"ok", 'conv_id': conv_id}
+    return {'access_token': access_token, 'refresh_token': None, 'message':"ok"}
 
 @router.get("/profile", dependencies=[Depends(RateLimiter(times=3, seconds=1))])
 async def get_me(request: Request, user_data: User = Depends(get_current_user)):
