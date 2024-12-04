@@ -14,6 +14,8 @@ import uvicorn
 from messages.schemas import Score
 from users.models import User
 from users.dependencies import get_current_user
+import json
+from random import choice
 
 app = FastAPI()
 
@@ -44,7 +46,9 @@ async def scores(score: Score):
 
 @app.get('/dialog/{conv_id}')
 async def dialog(conv_id:int, request: Request, user_data: User = Depends(get_current_user)):
-    return templates.TemplateResponse('dialog.html', context={'request': request, 'username':user_data.email, 'conv_id': conv_id})
+    with open('products.json', 'r', encoding='utf-8') as f:
+        links = json.load(f)
+    return templates.TemplateResponse('dialog.html', context={'request': request, 'username':user_data.email, 'conv_id': conv_id, 'image': choice(links)})
 
 app.include_router(router_users)
 

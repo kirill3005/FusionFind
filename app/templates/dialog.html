@@ -543,6 +543,12 @@
       welcomeMessage.classList.add('message', 'bot-message');
       welcomeMessage.textContent = "Здравствуйте! Я поисковый бот FusionFind. Я помогу вам найти нужные товары. Просто опишите, что вы ищете, или загрузите фотографию товара.";
       chatMessages.appendChild(welcomeMessage);
+      const img = document.createElement('img');
+      img.src = '{{image}}';
+      img.style.maxWidth = '200px';
+      img.style.borderRadius = '4px';
+      img.style.marginBottom = '8px';
+      welcomeMessage.appendChild(img);
 
     }
 
