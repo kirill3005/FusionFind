@@ -541,14 +541,20 @@
       
       const welcomeMessage = document.createElement('div');
       welcomeMessage.classList.add('message', 'bot-message');
-      welcomeMessage.textContent = "Здравствуйте! Я поисковый бот FusionFind. Я помогу вам найти нужные товары. Просто опишите, что вы ищете, или загрузите фотографию товара.";
+      welcomeMessage.textContent = "Здравствуйте! Прошу вас скачать фото образа и отправить его боту с просьбой найти товар, как на фото, написав для этого промпт модели.";
       chatMessages.appendChild(welcomeMessage);
       const img = document.createElement('img');
-      img.src = '{{image}}';
+      img.src = '{{look.image}}';
       img.style.maxWidth = '200px';
       img.style.borderRadius = '4px';
       img.style.marginBottom = '8px';
       welcomeMessage.appendChild(img);
+      const img_sim = document.createElement('img_sim');
+      img_sim.src = '{{look.similar}}';
+      img_sim.style.maxWidth = '200px';
+      img_sim.style.borderRadius = '4px';
+      img_sim.style.marginBottom = '8px';
+      welcomeMessage.appendChild(img_sim);
 
     }
 
