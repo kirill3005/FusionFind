@@ -87,8 +87,15 @@ async function loginFunction(event, conv_id) {
         const result = await response.json();
 
         if (result.message) {  // Проверяем наличие сообщения о успешной регистрации
-            const conv = await fetch('http://api:8001/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis&db_token=MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0', {method: "POST"})
-            const conv_id = conv.json().conv_id;
+            const conv = await fetch('http://api.fusionfind.ru/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis&db_token=MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0',
+                {method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                body: ''
+                });
+            const jsn = await conv.json();
+            const conv_id = jsn.conv_id;
             window.location.href = '/dialog/'+conv_id;  // Перенаправляем пользователя на страницу логина
         } else {
             alert(result.message || 'Неизвестная ошибка');
