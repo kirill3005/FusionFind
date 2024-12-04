@@ -1,16 +1,16 @@
-<html><head>
+<html><head><base href="https://www.fusionfind.com/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FusionFind - Современный поиск по товарам</title>
   <style>
     :root {
-      --primary-color: #FFDD2D; /* Changed from #34D399 to Tinkoff yellow */
-      --primary-dark: #FCC521;  /* Changed from #059669 to darker yellow */
+      --primary-color: #FFDD2D;
+      --primary-dark: #FCC521;
       --text-color: #1F2937;
-      --bg-light: #FFFAE5;     /* Changed from #F0FDF4 to light yellow */
+      --bg-light: #FFFAE5;
       --border-color: #E5E7EB;
     }
-    
+
     body, html {
       margin: 0;
       padding: 0;
@@ -44,7 +44,7 @@
     .logo {
       font-size: 1.5em;
       font-weight: bold;
-      color: #000000; /* Changed from var(--primary-dark) to black for better contrast with yellow */
+      color: #000000;
       text-decoration: none;
     }
 
@@ -265,11 +265,72 @@
       margin-bottom: 8px;
     }
 
+    .feedback-container {
+      margin-top: 10px;
+      padding: 10px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .feedback-question {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .feedback-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .feedback-criteria {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .feedback-criteria.active {
+      display: block;
+    }
+
+    .criteria-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .criteria-item label {
+      margin-left: 8px;
+      font-size: 14px;
+    }
+
+    .feedback-info {
+      background-color: var(--bg-light);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .feedback-submit {
+      display: none;
+      margin-top: 15px;
+      text-align: left; /* Changed from right to left */
+    }
+
+    .feedback-submit.active {
+      display: block;
+    }
+
+    .feedback-submit .auth-button {
+      margin-left: 0; /* Remove left margin since it's now on the left */
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+
     @media (max-width: 768px) {
       .features-grid {
         grid-template-columns: 1fr;
       }
-      
+
       .hero h1 {
         font-size: 2.8em;
       }
@@ -327,6 +388,19 @@
     <section class="container">
       <h2 class="chat-title">Попробуйте демо-версию поискового бота</h2>
       <p class="chat-description">Этот тестовый чат демонстрирует работу поискового бота. Вы можете отправлять текстовые сообщения и изображения, чтобы увидеть, как работает наша система поиска товаров. Попробуйте описать товар своими словами или загрузить его фотографию.</p>
+      <div class="feedback-info">
+        <strong>Оцени качество ответов шоппинг ассистента по 3 бинарным метрикам:</strong>
+        <br>
+        0 - критерий не выполнен, 1 - критерий выполнен
+        <br><br>
+        Критерии оценки:
+        <br>
+        1. Адекватность: ассистент ответил на вопрос (пускай даже неправильно), текст понятен и не содержит большого количества ошибок
+        <br>
+        2. Осознавание ошибок: ответ содержит ошибки, но ассистент их осознаёт и обозначает это
+        <br>
+        3. Полезность: рекомендованы правильные товары, допускаются небольшие ошибки или неточности
+      </div>
       <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
           <!-- Messages will be added here dynamically -->
@@ -393,6 +467,73 @@
         chatMessages.appendChild(botMessage);
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
+
+        const botMessage = document.createElement('div');
+        botMessage.classList.add('message', 'bot-message');
+
+        const responseText = document.createElement('div');
+        responseText.textContent = getBotResponse(message, image !== null);
+        botMessage.appendChild(responseText);
+
+        const feedbackContainer = document.createElement('div');
+        feedbackContainer.classList.add('feedback-container');
+
+        const feedbackQuestion = document.createElement('div');
+        feedbackQuestion.classList.add('feedback-question');
+        feedbackQuestion.textContent = 'Ответил ли ассистент на ваш вопрос?';
+
+        const feedbackButtons = document.createElement('div');
+        feedbackButtons.classList.add('feedback-buttons');
+
+        const yesButton = document.createElement('button');
+        yesButton.classList.add('button');
+        yesButton.textContent = 'Да';
+        yesButton.onclick = () => showCriteria(feedbackContainer);
+
+        const noButton = document.createElement('button');
+        noButton.classList.add('auth-button');
+        noButton.textContent = 'Нет';
+        noButton.onclick = () => hideFeedback(feedbackContainer);
+
+        feedbackButtons.appendChild(yesButton);
+        feedbackButtons.appendChild(noButton);
+
+        feedbackContainer.appendChild(feedbackQuestion);
+        feedbackContainer.appendChild(feedbackButtons);
+
+        const criteriaSection = document.createElement('div');
+        criteriaSection.classList.add('feedback-criteria');
+
+        const criteria = [
+            'Адекватность: ассистент ответил на вопрос, текст понятен и без ошибок',
+            'Осознавание ошибок: ассистент осознает свои ошибки и обозначает их',
+            'Полезность: рекомендованы правильные товары с небольшими неточностями'
+          ];
+
+          criteria.forEach((criterion, index) => {
+            const criteriaItem = document.createElement('div');
+            criteriaItem.classList.add('criteria-item');
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `criterion-${index}`;
+
+            const label = document.createElement('label');
+            label.htmlFor = `criterion-${index}`;
+            label.textContent = criterion;
+
+            criteriaItem.appendChild(checkbox);
+            criteriaItem.appendChild(label);
+            criteriaSection.appendChild(criteriaItem);
+          });
+
+          feedbackContainer.appendChild(criteriaSection);
+          botMessage.appendChild(feedbackContainer);
+
+          chatMessages.appendChild(botMessage);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     }
@@ -441,11 +582,7 @@
       welcomeMessage.classList.add('message', 'bot-message');
       welcomeMessage.textContent = "Здравствуйте! Я поисковый бот FusionFind. Я помогу вам найти нужные товары. Просто опишите, что вы ищете, или загрузите фотографию товара.";
       chatMessages.appendChild(welcomeMessage);
-      
-      const exampleMessage = document.createElement('div');
-      exampleMessage.classList.add('message', 'bot-message');
-      exampleMessage.textContent = "Например, вы можете написать: 'Ищу синий свитер с воротником' или 'Нужны белые кроссовки размер 42'";
-      chatMessages.appendChild(exampleMessage);
+
     }
 
     const input = document.getElementById('messageInput');
@@ -480,6 +617,44 @@
       if (imageSrc) {
         removeImage();
       }
+    }
+    function showCriteria(container) {
+      const criteriaSection = container.querySelector('.feedback-criteria');
+      criteriaSection.classList.add('active');
+
+      // Remove existing submit button if present
+      const existingSubmit = container.querySelector('.feedback-submit');
+      if (existingSubmit) {
+        existingSubmit.remove();
+      }
+
+      // Create submit button
+      const submitContainer = document.createElement('div');
+      submitContainer.classList.add('feedback-submit');
+      submitContainer.classList.add('active');
+
+      const submitButton = document.createElement('button');
+      submitButton.classList.add('auth-button'); // Changed from 'button' to 'auth-button'
+      submitButton.textContent = 'Отправить оценку';
+      submitButton.onclick = () => submitFeedback(container);
+
+      submitContainer.appendChild(submitButton);
+      criteriaSection.appendChild(submitContainer);
+    }
+
+    function submitFeedback(container) {
+      const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+      const feedback = Array.from(checkboxes).map(checkbox => checkbox.checked ? 1 : 0);
+
+      // Here you can handle the feedback data as needed
+      console.log('Feedback submitted:', feedback);
+
+      // Hide the feedback container
+      hideFeedback(container);
+    }
+
+    function hideFeedback(container) {
+      container.style.display = 'none';
     }
   </script>
 </body></html>
