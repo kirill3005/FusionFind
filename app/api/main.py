@@ -86,7 +86,10 @@ async def send_message(message: NewMessage):
     messages = await MessagesDAO.find_all(conversation_id = message.conversation_id)
     history = []
     for messagee in messages:
-        history.append({'role':messagee.sender, 'parts':[{'mime_type': 'image/jpeg', 'data': messagee.photo}, messagee.message]})
+        if message.photo == 'None' or message.photo == 'http://fusionfind.ru/':
+            history.append({'role':messagee.sender, 'parts':messagee.message})
+        else:
+            history.append({'role':messagee.sender, 'parts':[{'mime_type': 'image/jpeg', 'data': messagee.photo}, messagee.message]})
     chat = model.start_chat(history=history)
     if message.photo == 'None' or message.photo == 'http://fusionfind.ru/':
         response = chat.send_message(message.message)
