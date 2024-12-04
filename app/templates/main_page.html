@@ -405,12 +405,12 @@
             },
           body: JSON.stringify({'api_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1ODIxNTIyfQ.ms-T2CU0_9BIYBRfApNoHFgMzKBhhtKlWftKyacBH_8',
             'db_token': 'MS1lNVZLRDgxcERPeFdPR3lBZFNEak9nPT0',
-            'conversation_id': 4,
+            'conversation_id': 1,
             'message': message,
           'photo': image})
         });
         const result = await response.json();
-        return result.response;;
+        return result.response;
     }
 
     window.onload = function() {
