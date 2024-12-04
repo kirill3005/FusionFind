@@ -55,14 +55,19 @@ async def send_message(message: NewMessage):
     if user.tokens_count <= 0:
         return {'message': 'У вас закончились токены', 'response': None}
     await UsersDAO.update(filter_by={'token': message.api_token},tokens_count=user.tokens_count - 1)
-    msg_dict = message.dict()
+    msg_dict = dict()
     msg_dict['user_token'] = message.api_token
     msg_dict['sender'] = 'user'
     msg_dict['conversation_id'] = message.conversation_id
     msg_dict['project_token'] = message.db_token
+    msg_dict['photo'] = message.photo
+    msg_dict['message'] = message.message
     await MessagesDAO.add(**msg_dict)
     '''response = model(message.message, message.photo)'''
     response_dict = {'message': 'response', 'user_token': message.api_token, 'photo': '', 'sender': 'model',
                      'conversation_id': message.conversation_id, 'project_token': message.db_token}
     await MessagesDAO.add(**response_dict)
-    return {'message':'OK', 'response':'Алё'}
+    genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    response = model.generate_content(message.message)
+    return {'message':'OK', 'response':response}
