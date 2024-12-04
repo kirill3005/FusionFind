@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, Response, Header, APIRouter, Depends
 from users.dao import UsersDAO
 
 from messages.dao import MessagesDAO, ConversationsDAO
-
+from starlette.responses import HTMLResponse, JSONResponse
 from messages.schemas import NewMessage
 
 from messages.models import Conversation
@@ -34,6 +34,12 @@ app.add_middleware(
 async def startup():
     redis = await aioredis.from_url("redis://redis:6379")
     await FastAPILimiter.init(redis)
+
+@app.head('/')
+async def head_handler():
+    # Возвращаем только метаданные без тела ответа
+    return HTMLResponse(headers={"Content-Type": "text/html"}, status_code=200)
+
 @app.post('/new_conversation',tags=['Создать новый диалог'], dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = None):
     if api_token is None or db_token is None:
@@ -78,7 +84,7 @@ async def send_message(message: NewMessage):
     response_dict = {'message': 'response', 'user_token': message.api_token, 'photo': '', 'sender': 'model',
                      'conversation_id': message.conversation_id, 'project_token': message.db_token}
     await MessagesDAO.add(**response_dict)
-    genai.configure(api_key="")
+    genai.configure(api_key="AIzaSyDph5JM6SV75EAlO2Eq2oSRfQ_hMip5FYY")
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(message.message)
-    return {'message':'OK', 'response':response}
+    return {'message':'OK', 'response':response.text}

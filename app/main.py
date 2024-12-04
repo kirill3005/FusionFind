@@ -1,6 +1,6 @@
 import aioredis
 from fastapi import FastAPI, Request, Depends, Response
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
 from users.router import router as router_users, templates
@@ -29,12 +29,13 @@ async def head_handler():
 
 @app.get('/', dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def index(request: Request):
-    conv_id = requests.post('http://api:8001/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1ODIxNTIyfQ.ms-T2CU0_9BIYBRfApNoHFgMzKBhhtKlWftKyacBH_8&db_token=MS1lNVZLRDgxcERPeFdPR3lBZFNEak9nPT0')
+    conv_id = requests.post('http://api:8001/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis&db_token=MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0')
 
     conv_id = conv_id.json()['conv_id']
-    return templates.TemplateResponse('main_page.html', context={'request': request, 'conv_id':conv_id})
+    return templates.TemplateResponse('main_page.html', context={'request': request, 'conv_id':int(conv_id)})
 
 app.include_router(router_users)
+
 
 
 

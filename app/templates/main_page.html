@@ -396,24 +396,42 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     }
-
     async function getBotResponse(message, image) {
+        const conversationId = {{ conv_id }};
+        if (image) {
         const response = await fetch('http://api.fusionfind.ru/message/', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: JSON.stringify({
-        api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1ODkyNTc3fQ.LAK1H66NmO75W4vPLvdJyrL0lDDbsRUiANzGpi6gTK4",
-        db_token: "MS1OWUJHenZKSVVhR0NIYmpneks4Y1BnPT0",
-        conversation_id: 1,
-        message: "message",
-        photo: "string",
-    }),
-});
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis",
+            db_token: "MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0",
+            conversation_id: conversationId, // Динамическое значение из шаблона
+            message: message,
+            photo: image             // Параметр функции
+            })});
+        const result = await response.json();
+        return result.response;}
+        else
+        {
+          const response = await fetch('http://api.fusionfind.ru/message/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis",
+            db_token: "MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0",
+            conversation_id: conversationId, // Динамическое значение из шаблона
+            message: message,
+            photo: "None"                 // Параметр функции
+            })});
         const result = await response.json();
         return result.response;
+        }
     }
 
     window.onload = function() {
