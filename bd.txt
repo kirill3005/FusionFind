@@ -1,0 +1,6 @@
+apt install alembic pip -y
+pip install pydantic-settings asyncpg
+pip install -U sqlalchemy
+alembic upgrade head
+alembic revision --autogenerate -m "Initial revision"
+alembic upgrade head
