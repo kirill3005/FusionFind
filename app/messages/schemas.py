@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field, EmailStr, validator, ConfigDict, field_va
 class NewMessage(BaseModel):
     api_token: str
     db_token: str
-    conversation_id: int
+    conversation_id: str
     message: str
     photo: str = None
 
