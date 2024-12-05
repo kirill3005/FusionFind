@@ -433,7 +433,7 @@
         botMessage.classList.add('message', 'bot-message');
 
         const responseText = document.createElement('div');
-        responseText.textContent = await getBotResponse(message, image !== null);
+        responseText.textContent = await getBotResponse(message, image);
         botMessage.appendChild(responseText);
 
         const feedbackContainer = document.createElement('div');
