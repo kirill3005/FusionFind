@@ -38,6 +38,8 @@ app.add_middleware(
 async def startup():
     redis = await aioredis.from_url("redis://redis:6379")
     await FastAPILimiter.init(redis)
+    global model_emb
+    model_emb = SentenceTransformer('intfloat/multilingual-e5-large-instruct')
 
 
 is_downloaded = False
@@ -86,10 +88,6 @@ async def head_handler():
 @app.post('/new_conversation',tags=['Создать новый диалог'], dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def new_conv(api_token: Optional[str] = None, db_token: Optional[str] = None):
     global is_downloaded
-    if not is_downloaded:
-        global model_emb
-        model_emb = SentenceTransformer('intfloat/multilingual-e5-large-instruct')
-        is_downloaded = True
     if api_token is None or db_token is None:
         return {'message':'Неверный токен пользователя или баз данных', 'conv_id':None}
     user = await UsersDAO.find_one_or_none(token=api_token)
