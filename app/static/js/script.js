@@ -87,7 +87,7 @@ async function loginFunction(event, conv_id) {
         const result = await response.json();
 
         if (result.message) {  // Проверяем наличие сообщения о успешной регистрации
-            const conv = await fetch('http://api.fusionfind.ru/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis&db_token=MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0',
+            const conv = await fetch('http://api.fusionfind.ru/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTcwMTI0fQ.pyRntCTCRnGJM1t9wafVwBtiSGGOULGAhNRioLIY6aI&db_token=MS05ZUl0ZktDLXpGeGVOTFNyZE5uZmFBPT0',
                 {method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

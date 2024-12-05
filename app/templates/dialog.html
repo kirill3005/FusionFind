@@ -433,8 +433,15 @@
         botMessage.classList.add('message', 'bot-message');
 
         const responseText = document.createElement('div');
-        responseText.textContent = await getBotResponse(message, image);
+        const response_from_bot = await getBotResponse(message, image);
+        responseText.textContent = response_from_bot[0];
         botMessage.appendChild(responseText);
+        const img_from_bot = document.createElement('img');
+        img_from_bot.src = response_from_bot[1];
+        img_from_bot.style.maxWidth = '200px';
+        img_from_bot.style.borderRadius = '4px';
+        img_from_bot.style.marginBottom = '8px';
+        botMessage.appendChild(img_from_bot);
 
         const feedbackContainer = document.createElement('div');
         feedbackContainer.classList.add('feedback-container');
@@ -508,14 +515,15 @@
             'Accept': 'application/json',
         },
         body: JSON.stringify({
-            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis",
-            db_token: "MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0",
+            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTcwMTI0fQ.pyRntCTCRnGJM1t9wafVwBtiSGGOULGAhNRioLIY6aI",
+            db_token: "MS05ZUl0ZktDLXpGeGVOTFNyZE5uZmFBPT0",
             conversation_id: conversationId, // Динамическое значение из шаблона
             message: message,
             photo: image             // Параметр функции
             })});
         const result = await response.json();
-        return result.response;}
+        return result.response;
+      }
         else
         {
           const response = await fetch('http://api.fusionfind.ru/message/', {
@@ -525,8 +533,8 @@
             'Accept': 'application/json',
         },
         body: JSON.stringify({
-            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis",
-            db_token: "MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0",
+            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTcwMTI0fQ.pyRntCTCRnGJM1t9wafVwBtiSGGOULGAhNRioLIY6aI",
+            db_token: "MS05ZUl0ZktDLXpGeGVOTFNyZE5uZmFBPT0",
             conversation_id: conversationId, // Динамическое значение из шаблона
             message: message,
             photo: "None"                 // Параметр функции
