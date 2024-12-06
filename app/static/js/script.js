@@ -96,7 +96,7 @@ async function loginFunction(event, conv_id) {
                 });
             const jsn = await conv.json();
             const conv_id = jsn.conv_id;
-            window.location.href = '/dialog/'+conv_id;  // Перенаправляем пользователя на страницу логина
+            window.location.href = '/user/profile';  // Перенаправляем пользователя на страницу логина
         } else {
             alert(result.message || 'Неизвестная ошибка');
         }

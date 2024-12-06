@@ -20,46 +20,57 @@ import pandas as pd
 
 app = FastAPI()
 
-
 app.mount('/static', StaticFiles(directory='static'), 'static')
 templates = Jinja2Templates(directory='templates')
+
 
 @app.on_event("startup")
 async def startup():
     redis = await aioredis.from_url("redis://redis:6379")
     await FastAPILimiter.init(redis)
 
+
 @app.head('/')
 async def head_handler():
     # Возвращаем только метаданные без тела ответа
     return JSONResponse(headers={"Content-Type": "text/html"}, status_code=200)
 
+
 @app.get('/', dependencies=[Depends(RateLimiter(times=5, seconds=1))])
 async def index(request: Request):
-    conv_id = requests.post('http://api:8001/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTcwMTI0fQ.pyRntCTCRnGJM1t9wafVwBtiSGGOULGAhNRioLIY6aI&db_token=MS05ZUl0ZktDLXpGeGVOTFNyZE5uZmFBPT0')
+    conv_id = requests.post(
+        'http://api:8001/new_conversation?api_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTcwMTI0fQ.pyRntCTCRnGJM1t9wafVwBtiSGGOULGAhNRioLIY6aI&db_token=MS05ZUl0ZktDLXpGeGVOTFNyZE5uZmFBPT0')
 
     conv_id = conv_id.json()['conv_id']
-    return templates.TemplateResponse('main_page.html', context={'request': request})
+    return templates.TemplateResponse('main_page.html', context={'request': request, 'conv_id': conv_id})
+
 
 @app.post('/scores')
 async def scores(score: Score):
     await ScoresDAO.add(**(score.dict()))
 
+
 @app.get('/dialog/{conv_id}')
-async def dialog(conv_id:int, request: Request, user_data: User = Depends(get_current_user)):
+async def dialog(conv_id: int, request: Request, user_data: User = Depends(get_current_user)):
     df = pd.read_csv('dataset_with_captions.csv')
-    ind = randint(0, len(list(pd['images'])))
-    look_img = list(pd['images'])[ind]
-    prod_img = list(pd['items_images'])[ind]
-    return templates.TemplateResponse('dialog.html', context={'request': request, 'username':user_data.email, 'conv_id': conv_id, 'look': {
-        'image': look_img, 'similar': prod_img}})
+    ind = randint(0, len(df['images'].tolist()))
+    look_img = df['images'].tolist()[ind]
+    prod_img = df['items_images'].tolist()[ind]
+    return templates.TemplateResponse('dialog.html',
+                                      context={'request': request, 'username': user_data.email, 'conv_id': conv_id,
+                                               'look': {
+                                                   'image': look_img, 'similar': prod_img}})
+
+
+@app.get('/get_look')
+async def get_item():
+    df = pd.read_csv('dataset_with_captions.csv')
+    ind = randint(0, len(df['images'].tolist()))
+    look_img = df['images'].tolist()[ind]
+    prod_img = df['items_images'].tolist()[ind]
+    return {'image': look_img, 'similar': prod_img}
+
 
 app.include_router(router_users)
-
-
-
-
-
-
 
 #uvicorn.run('main:app', host="0.0.0.0", port=8000, log_level="info")

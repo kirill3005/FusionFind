@@ -384,6 +384,40 @@
         </div>
       </div>
     </section>
+    <section class="container">
+      <p style="color: white;">ф</p>
+      <h2 class="chat-title">Попробуйте демо-версию поискового бота</h2>
+      <p class="chat-description">Этот тестовый чат демонстрирует работу поискового бота. Вы можете отправлять текстовые сообщения и изображения, чтобы увидеть, как работает наша система поиска товаров. Попробуйте описать товар своими словами или загрузить его фотографию.</p>
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will be added here dynamically -->
+        </div>
+        <div class="chat-input-container">
+          <div id="imagePreview" style="display: none;">
+            <img id="currentImage" style="display: none;">
+            <button class="icon-button" onclick="removeImage()">
+              <svg viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          </div>
+          <input type="text" class="chat-input" placeholder="Введите сообщение..." id="messageInput">
+          <div class="chat-controls">
+            <input type="file" id="photoInput" accept="image/*" style="display: none">
+            <button class="icon-button"onclick="document.getElementById('photoInput').click()">
+              <svg viewBox="0 0 24 24">
+                <path d="M13.5 9c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM19 18H5v-7h2.38l1.73-2h6.89l1.73 2H19v7zM21 6h-3.6l-1.73-2H8.33L6.6 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+              </svg>
+            </button>
+            <button class="icon-button send-button" onclick="sendMessageWithImage()">
+              <svg viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -419,73 +453,23 @@
         botMessage.classList.add('message', 'bot-message');
 
         const responseText = document.createElement('div');
-        responseText.textContent = getBotResponse(message, image !== null);
+        const response_from_bot = await getBotResponse(message, image);
+        responseText.textContent = response_from_bot[0];
         botMessage.appendChild(responseText);
+        if (response_from_bot[1]){
+        const img_from_bot = document.createElement('img');
+        img_from_bot.src = response_from_bot[1];
+        img_from_bot.style.maxWidth = '200px';
+        img_from_bot.style.borderRadius = '4px';
+        img_from_bot.style.marginBottom = '8px';
+        botMessage.appendChild(img_from_bot);}
 
-        const feedbackContainer = document.createElement('div');
-        feedbackContainer.classList.add('feedback-container');
-
-        const feedbackQuestion = document.createElement('div');
-        feedbackQuestion.classList.add('feedback-question');
-        feedbackQuestion.textContent = 'Ответил ли ассистент на ваш вопрос?';
-
-        const feedbackButtons = document.createElement('div');
-        feedbackButtons.classList.add('feedback-buttons');
-
-        const yesButton = document.createElement('button');
-        yesButton.classList.add('button');
-        yesButton.textContent = 'Да';
-        yesButton.onclick = () => showCriteria(feedbackContainer);
-
-        const noButton = document.createElement('button');
-        noButton.classList.add('auth-button');
-        noButton.textContent = 'Нет';
-        noButton.onclick = () => hideFeedback(feedbackContainer);
-
-        feedbackButtons.appendChild(yesButton);
-        feedbackButtons.appendChild(noButton);
-
-        feedbackContainer.appendChild(feedbackQuestion);
-        feedbackContainer.appendChild(feedbackButtons);
-
-        const criteriaSection = document.createElement('div');
-        criteriaSection.classList.add('feedback-criteria');
-
-        const criteria = [
-            'Адекватность: ассистент ответил на вопрос, текст понятен и без ошибок',
-            'Осознавание ошибок: ассистент осознает свои ошибки и обозначает их',
-            'Полезность: рекомендованы правильные товары с небольшими неточностями'
-          ];
-
-          criteria.forEach((criterion, index) => {
-            const criteriaItem = document.createElement('div');
-            criteriaItem.classList.add('criteria-item');
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `criterion-${index}`;
-
-            const label = document.createElement('label');
-            label.htmlFor = `criterion-${index}`;
-            label.textContent = criterion;
-
-            criteriaItem.appendChild(checkbox);
-            criteriaItem.appendChild(label);
-            criteriaSection.appendChild(criteriaItem);
-          });
-
-          feedbackContainer.appendChild(criteriaSection);
-          botMessage.appendChild(feedbackContainer);
-
-          chatMessages.appendChild(botMessage);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-
-
+        chatMessages.appendChild(botMessage);
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     }
     async function getBotResponse(message, image) {
-        const conversationId = {{ conv_id }};
+        const conversationId = '{{ conv_id }}';
         if (image) {
         const response = await fetch('http://api.fusionfind.ru/message/', {
         method: 'POST',
@@ -494,14 +478,15 @@
             'Accept': 'application/json',
         },
         body: JSON.stringify({
-            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis",
-            db_token: "MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0",
+            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTcwMTI0fQ.pyRntCTCRnGJM1t9wafVwBtiSGGOULGAhNRioLIY6aI",
+            db_token: "MS05ZUl0ZktDLXpGeGVOTFNyZE5uZmFBPT0",
             conversation_id: conversationId, // Динамическое значение из шаблона
             message: message,
             photo: image             // Параметр функции
             })});
         const result = await response.json();
-        return result.response;}
+        return result.response;
+      }
         else
         {
           const response = await fetch('http://api.fusionfind.ru/message/', {
@@ -511,8 +496,8 @@
             'Accept': 'application/json',
         },
         body: JSON.stringify({
-            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTAwNTY5fQ.xTojJvrfusApuHQzkK8fCw-WCNgYexnerYlVJ0a1bis",
-            db_token: "MS14eGZfM29yalVnY2VqbU5DTmVabjlRPT0",
+            api_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzM1OTcwMTI0fQ.pyRntCTCRnGJM1t9wafVwBtiSGGOULGAhNRioLIY6aI",
+            db_token: "MS05ZUl0ZktDLXpGeGVOTFNyZE5uZmFBPT0",
             conversation_id: conversationId, // Динамическое значение из шаблона
             message: message,
             photo: "None"                 // Параметр функции
@@ -524,10 +509,10 @@
 
     window.onload = function() {
       const chatMessages = document.getElementById('chatMessages');
-      
+
       const welcomeMessage = document.createElement('div');
       welcomeMessage.classList.add('message', 'bot-message');
-      welcomeMessage.textContent = "Здравствуйте! Я поисковый бот FusionFind. Я помогу вам найти нужные товары. Просто опишите, что вы ищете, или загрузите фотографию товара.";
+      welcomeMessage.textContent = "Здравствуйте! Я мультимодальный шопинг ассистент, можете спросить меня о товаре";
       chatMessages.appendChild(welcomeMessage);
 
     }
@@ -564,44 +549,6 @@
       if (imageSrc) {
         removeImage();
       }
-    }
-    function showCriteria(container) {
-      const criteriaSection = container.querySelector('.feedback-criteria');
-      criteriaSection.classList.add('active');
-
-      // Remove existing submit button if present
-      const existingSubmit = container.querySelector('.feedback-submit');
-      if (existingSubmit) {
-        existingSubmit.remove();
-      }
-
-      // Create submit button
-      const submitContainer = document.createElement('div');
-      submitContainer.classList.add('feedback-submit');
-      submitContainer.classList.add('active');
-
-      const submitButton = document.createElement('button');
-      submitButton.classList.add('auth-button'); // Changed from 'button' to 'auth-button'
-      submitButton.textContent = 'Отправить оценку';
-      submitButton.onclick = () => submitFeedback(container);
-
-      submitContainer.appendChild(submitButton);
-      criteriaSection.appendChild(submitContainer);
-    }
-
-    function submitFeedback(container) {
-      const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-      const feedback = Array.from(checkboxes).map(checkbox => checkbox.checked ? 1 : 0);
-
-      // Here you can handle the feedback data as needed
-      console.log('Feedback submitted:', feedback);
-
-      // Hide the feedback container
-      hideFeedback(container);
-    }
-
-    function hideFeedback(container) {
-      container.style.display = 'none';
     }
   </script>
 </body></html>

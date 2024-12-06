@@ -26,3 +26,4 @@ class Scores(Base):
     username: Mapped[str]
     user_msg: Mapped[str]
     model_msg: Mapped[str]
+    product_image: Mapped[str]

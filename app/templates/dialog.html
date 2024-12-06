@@ -375,7 +375,7 @@
         <div class="chat-input-container">
           <div id="imagePreview" style="display: none;">
             <img id="currentImage" style="display: none;">
-            <button class="icon-button" onclick="removeImage()">
+            <button class="icon-button"> <!-- onclick="removeImage()"-->
               <svg viewBox="0 0 24 24">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
               </svg>
@@ -384,7 +384,7 @@
           <input type="text" class="chat-input" placeholder="Введите сообщение..." id="messageInput">
           <div class="chat-controls">
             <input type="file" id="photoInput" accept="image/*" style="display: none">
-            <button class="icon-button" onclick="document.getElementById('photoInput').click()">
+            <button class="icon-button"> <!-- onclick="document.getElementById('photoInput').click()"-->
               <svg viewBox="0 0 24 24">
                 <path d="M13.5 9c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM19 18H5v-7h2.38l1.73-2h6.89l1.73 2H19v7zM21 6h-3.6l-1.73-2H8.33L6.6 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
               </svg>
@@ -461,7 +461,7 @@
         const noButton = document.createElement('button');
         noButton.classList.add('auth-button');
         noButton.textContent = 'Нет';
-        noButton.onclick = () => hideFeedback(feedbackContainer);
+        noButton.onclick = () => showCriteria(feedbackContainer, message, responseText.textContent);
 
         feedbackButtons.appendChild(yesButton);
         feedbackButtons.appendChild(noButton);
@@ -546,10 +546,10 @@
 
     window.onload = function() {
       const chatMessages = document.getElementById('chatMessages');
-      
+
       const welcomeMessage = document.createElement('div');
       welcomeMessage.classList.add('message', 'bot-message');
-      welcomeMessage.textContent = "Здравствуйте! Прошу вас скачать фото образа и отправить его боту с просьбой найти товар, как на фото, написав для этого промпт модели.";
+      welcomeMessage.textContent = "Здравствуйте! Прошу вас отправить боту промпт с просьбой найти товар, как на фото. Товар может не присутствовать на фото. Вам надо немного описать его. Ожидание ответа от бота занимает некоторе время.";
       chatMessages.appendChild(welcomeMessage);
       const img = document.createElement('img');
       img.src = '{{look.image}}';
@@ -563,6 +563,8 @@
       img_sim.style.borderRadius = '4px';
       img_sim.style.marginBottom = '8px';
       welcomeMessage.appendChild(img_sim);
+      document.getElementById('currentImage').src = '{{look.image}}';
+      document.getElementById('imagePreview').style.display = 'flex';
 
     }
 
@@ -637,14 +639,63 @@
                 useful: feedback[2],
                 username: '{{username}}',
                 user_msg: user,
-                model_msg: bot})
-      })
+                model_msg: bot,
+                product_image: '{{look.image}}'})
+      }); //product_image: '{{look.image}}'
+
+      const new_look_resp = await fetch('/get_look', {method: 'GET'});
+      const new_look = await new_look_resp.json();
+      const chatMessages1 = document.getElementById('chatMessages');
+
+      const newMessage = document.createElement('div');
+      newMessage.classList.add('message', 'bot-message');
+      newMessage.textContent = "Вот следующий образ/интерьер и товар";
+      chatMessages1.appendChild(newMessage);
+      const img1 = document.createElement('img');
+      img1.src = new_look.image;
+      img1.style.maxWidth = '200px';
+      img1.style.borderRadius = '4px';
+      img1.style.marginBottom = '8px';
+      newMessage.appendChild(img1);
+      const img_sim1 = document.createElement('img');
+      img_sim1.src = new_look.similar;
+      img_sim1.style.maxWidth = '200px';
+      img_sim1.style.borderRadius = '4px';
+      img_sim1.style.marginBottom = '8px';
+      newMessage.appendChild(img_sim1);
+      document.getElementById('currentImage').src = new_look.image;
+      document.getElementById('imagePreview').style.display = 'flex';
 
       // Hide the feedback container
       hideFeedback(container);
     }
 
     function hideFeedback(container) {
+      container.style.display = 'none';
+    }
+    async function no(container) {
+      const new_look_resp = await fetch('/get_look', {method: 'GET'});
+      const new_look = await new_look_resp.json();
+      const chatMessages1 = document.getElementById('chatMessages');
+
+      const newMessage = document.createElement('div');
+      newMessage.classList.add('message', 'bot-message');
+      newMessage.textContent = "Вот следующий образ/интерьер и товар";
+      chatMessages1.appendChild(newMessage);
+      const img1 = document.createElement('img');
+      img1.src = new_look.image;
+      img1.style.maxWidth = '200px';
+      img1.style.borderRadius = '4px';
+      img1.style.marginBottom = '8px';
+      newMessage.appendChild(img1);
+      const img_sim1 = document.createElement('img');
+      img_sim1.src = new_look.similar;
+      img_sim1.style.maxWidth = '200px';
+      img_sim1.style.borderRadius = '4px';
+      img_sim1.style.marginBottom = '8px';
+      newMessage.appendChild(img_sim1);
+      document.getElementById('currentImage').src = new_look.image;
+      document.getElementById('imagePreview').style.display = 'flex';
       container.style.display = 'none';
     }
   </script>

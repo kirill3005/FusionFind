@@ -19,6 +19,7 @@ class Score(BaseModel):
     username: str
     user_msg: str
     model_msg: str
+    product_image: str
 
 
 
