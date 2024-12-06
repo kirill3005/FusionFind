@@ -35,10 +35,7 @@ app.add_middleware(
     allow_headers=["*"],  # Или перечислите ["Content-Type", "Authorization"]
 )
 df = ''
-keys = ['AIzaSyA04Pr0_oKqpuoLiTBLBD5QaTKofVp0qvE', 'AIzaSyBayHdeycAi1-S6dY--3YZRk3qY-4HRZBM',
-        'AIzaSyBLFeVGiRFmlHBqhUU4dkr24P0GLRQpk5E', 'AIzaSyAMNZYp9mj8dDvQ0d0Qc24nMaVrp536Syw',
-        'AIzaSyD2cA3Mduptwd_f-Xf2_gkkC6sMdYysECI', 'AIzaSyCljkTFey7phavWeXWh8LCMlI_Cm9KsDmo',
-        'AIzaSyBm4Nzv6YGcX0bb9uL3wKTd4dbScxVAGY4', 'AIzaSyC0skPs3B7jMmnB6GZaiARrFfBjuUdC2bs']
+keys = []
 
 ind = 0
 geminies = []
